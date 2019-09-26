@@ -35,6 +35,8 @@ export default {
     menu: [
       { title: 'Drivers', link: '/drivers' },
       { title: 'Buses', link: '/buses' },
+      { title: 'Routes', link: '/routes' },
+      { title: 'Ways', link: '/ways' },
       { title: 'Downloads', link: '/downloads' },
     ],
     drawer: false

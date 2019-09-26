@@ -32,17 +32,17 @@ export default {
     DriverFormGraphic
   },
   props: ['item'],
-  data: () => ({
-    ways: []
-  }),
   computed: {
     buses() {
       return this.$store.getters['buses/list'].map((value) => ({ text: value.busnumber, value: value._id }))
+    },
+    ways() {
+      return this.$store.getters['ways/list'].map((value) => ({ text: `${value.route.title}/${value.title}`, value: value._id }))
     }
   },
   mounted() {
     this.$store.dispatch('buses/readAll')
-    // this.$store.dispatch('ways/readAll')
+    this.$store.dispatch('ways/readAll')
   }
 }
 </script>

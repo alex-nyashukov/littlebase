@@ -2,6 +2,7 @@
   <v-dialog
     v-model="dialog.isOpen"
     width="900"
+    scrollable
     :persistent="isChanged"
   >
     <v-card
@@ -29,7 +30,24 @@
         <v-btn v-if="this.dialog.model._id" class="ma-3" dark color="red lighten-2" @click="remove">Удалить</v-btn>
         <v-spacer></v-spacer>
         <v-btn class="ma-3" @click="onClose">Закрыть</v-btn>
-        <v-btn class="ma-3" dark color="green lighten-2" @click="save">Сохранить</v-btn>
+        <template class="ma-3">
+          <v-btn style="border-top-right-radius: 0; border-bottom-right-radius: 0" dark color="green lighten-2" @click="save">Сохранить</v-btn>
+          <v-tooltip top>
+            <template v-slot:activator="{ on }">
+              <v-btn 
+                v-on="on" 
+                style="border-top-left-radius: 0; border-bottom-left-radius: 0" 
+                class="ml-0" 
+                dark 
+                color="green lighten-2" 
+                @click="saveAndClose"
+              >
+                <v-icon color="white">fa-sign-out-alt</v-icon>
+              </v-btn>
+            </template>
+            <span>Save and close</span>
+          </v-tooltip>
+        </template>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -81,6 +99,10 @@ export default {
         this.dialog.model = await this.$store.dispatch(`${this.dialog.model.type}/create`, { new_item: this.dialog.model })
       }
       Object.assign(this.dialog.oldModel, this.dialog.model)
+    },
+    async saveAndClose() {
+      await this.save()
+      this.onClose()
     },
     async remove() {
       await this.$store.dispatch(`${this.dialog.model.type}/remove`, { id: this.dialog.model._id })

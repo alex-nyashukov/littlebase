@@ -14,6 +14,8 @@ void (function updateModules() {
 
   resolveStoreModules(require('..\\store\\buses.js'), 'buses.js')
   resolveStoreModules(require('..\\store\\drivers.js'), 'drivers.js')
+  resolveStoreModules(require('..\\store\\routes.js'), 'routes.js')
+  resolveStoreModules(require('..\\store\\ways.js'), 'ways.js')
 
   // If the environment supports hot reloading...
 })()

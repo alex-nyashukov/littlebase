@@ -23,9 +23,14 @@
 <script>
 export default {
   props: ['item'],
-  data: () => ({
-    ways: []
-  }),
+  computed: {
+    ways() {
+      return this.$store.getters['ways/list'].map((value) => ({ text: value.title, value: value._id}))
+    }
+  },
+  mounted() {
+    this.$store.dispatch('ways/readAll')
+  }
 }
 </script>
 
