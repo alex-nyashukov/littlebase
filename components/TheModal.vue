@@ -26,7 +26,7 @@
         <component :is="dialog.model.form" :item="dialog.model"></component>
       </v-card-text>
       <v-card-actions>
-        <v-btn v-if="this.dialog.model.id" class="ma-3" dark color="red lighten-2" @click="remove">Удалить</v-btn>
+        <v-btn v-if="this.dialog.model._id" class="ma-3" dark color="red lighten-2" @click="remove">Удалить</v-btn>
         <v-spacer></v-spacer>
         <v-btn class="ma-3" @click="onClose">Закрыть</v-btn>
         <v-btn class="ma-3" dark color="green lighten-2" @click="save">Сохранить</v-btn>
@@ -57,7 +57,7 @@ export default {
     async open(model) {
       this.dialog.isLoading = true
       this.dialog.isOpen = true
-      if(model.id) {
+      if(model._id) {
         this.dialog.model = await this.$store.dispatch(`${model.type}/read`, { id: model._id })
       } else {
         this.dialog.model = model
@@ -73,8 +73,8 @@ export default {
       }
     },
     async save() {
-      if(this.dialog.model.id) {
-        await this.$store.dispatch(`${this.dialog.model.type}/update`, { updated_item: this.dialog.model })
+      if(this.dialog.model._id) {
+        this.dialog.model = await this.$store.dispatch(`${this.dialog.model.type}/update`, { updated_item: this.dialog.model })
       } else {
         this.dialog.model = await this.$store.dispatch(`${this.dialog.model.type}/create`, { new_item: this.dialog.model })
       }

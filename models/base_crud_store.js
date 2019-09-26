@@ -39,7 +39,7 @@ export default function(Model, url) {
           resolve()
         })
       },
-      read({ state, axios }, { id }) {
+      read({ }, { id }) {
         return new Promise(async (resolve, reject) => {
           // ---Заглушка
           const item = await this.$axios.$get(`/api/drivers/${id}`)
@@ -53,22 +53,22 @@ export default function(Model, url) {
           const item = await this.$axios.$post(`/api/drivers`, new_item)
           // ---
           commit('create_item', { item })
-          resolve(item)
+          resolve(new Model(item))
         })
       },
       update({ commit }, { updated_item }) {
         return new Promise(async (resolve, reject) => {
           // ---Заглушка
-          let item = await this.$axios.$put(`/api/drivers/${updated_item.id}`, updated_item)
+          let item = await this.$axios.$put(`/api/drivers/${updated_item._id}`, updated_item)
           // ---
           commit('update_item', { item })
-          resolve()
+          resolve(new Model(item))
         })
       },
       remove({ commit, axios }, { id }) {
         return new Promise(async (resolve, reject) => {
           // ---Заглушка
-          await this.$axios.$delete(`/api/records/drivers/${id}`)
+          await this.$axios.$delete(`/api/drivers/${id}`)
           // ---
           commit('remove_item', { id })
           resolve()

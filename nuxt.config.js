@@ -1,3 +1,4 @@
+var dev = process.env.NODE_ENV === 'development'
 
 module.exports = {
   mode: 'spa',
@@ -52,7 +53,7 @@ module.exports = {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseURL: 'http://194.67.90.97:8080'
+    baseURL: dev ? '' : 'http://194.67.90.97:8080'
   },
   vuetify: {
     icons: {
