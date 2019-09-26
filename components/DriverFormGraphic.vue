@@ -53,7 +53,6 @@ export default {
     today: moment().format("YYYY-MM-DD"),
     menu: false
   }),
-
   computed: {
     formattedDate() {
       return this.graphic.date

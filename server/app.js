@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 
 const app = express()
 mongoose.set('useFindAndModify', false);
-mongoose.connect('mongodb://localhost/base', function (err) {
+mongoose.connect('mongodb://localhost/base', {useNewUrlParser: true, useUnifiedTopology: true}, function (err) {
    if (err) throw err;
    console.log('Successfully connected');
  
