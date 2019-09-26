@@ -50,7 +50,7 @@ export default {
       return JSON.stringify(this.dialog.model) !== JSON.stringify(this.dialog.oldModel) 
     },
     dialogTitle() {
-      return this.dialog.model.id ? 'Edit item' : 'New item'
+      return this.dialog.model._id ? 'Edit item' : 'New item'
     }
   },
   methods: {
@@ -58,7 +58,7 @@ export default {
       this.dialog.isLoading = true
       this.dialog.isOpen = true
       if(model.id) {
-        this.dialog.model = await this.$store.dispatch(`${model.type}/read`, { id: model.id })
+        this.dialog.model = await this.$store.dispatch(`${model.type}/read`, { id: model._id })
       } else {
         this.dialog.model = model
       }
@@ -81,7 +81,7 @@ export default {
       Object.assign(this.dialog.oldModel, this.dialog.model)
     },
     async remove() {
-      await this.$store.dispatch(`${this.dialog.model.type}/remove`, { id: this.dialog.model.id })
+      await this.$store.dispatch(`${this.dialog.model.type}/remove`, { id: this.dialog.model._id })
       this.dialog.isOpen = false
     }
   }

@@ -17,7 +17,7 @@ export default function(Model, url) {
       },
       update_item(state, { item }) {
         state.list = state.list.map((value) => {
-          if(value.id == item.id) {
+          if(value._id == item._id) {
             return new Model(item)
           }
           return value
@@ -25,7 +25,7 @@ export default function(Model, url) {
       },
       remove_item(state, { id }) {
         state.list = state.list.filter((value) => {
-          return value.id !== id
+          return value._id !== id
         })
       }
     },
@@ -41,7 +41,6 @@ export default function(Model, url) {
       },
       read({ state, axios }, { id }) {
         return new Promise(async (resolve, reject) => {
-          console.log(id)
           // ---Заглушка
           const item = await this.$axios.$get(`/api/drivers/${id}`)
           // ---
