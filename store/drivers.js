@@ -1,7 +1,7 @@
 import Model from '@/models/driver'
 import BaseCRUDStore from '@/models/base_crud_store'
 
-var store = BaseCRUDStore(Model, '')
+var store = BaseCRUDStore(Model, '/api/drivers', { readAll: 'populate=bus' })
 
 export const state = store.state
 

@@ -21,11 +21,11 @@
     </v-card-title>
     <v-data-table
       :loading="table.isLoading"
-      loading-text="Loading..."
       :headers="table.headers"
-      :items="table.items"
       :search="table.search"
-      :mobile-breakpoint="0"
+      :items="items"
+      :mobile-breakpoint="0" 
+      loading-text="Loading..."
       @click:row="onRowClick"
     >
     </v-data-table>
@@ -43,19 +43,25 @@ export default {
   components: {
     AppModal
   },
-  data: () => ({
-    table: {
-      isLoading: true,
-      search: '',
-      headers: [
-        { text: 'Busnumber', value: 'busnumber' },
-        { text: 'Mark' },
-        { text: 'Color' }
-      ],
-      items: [
-      ]
+  data() {
+    return {
+      table: {
+        isLoading: true,
+        search: '',
+        headers: [
+          { text: 'Busnumber', value: 'busnumber' },
+          { text: 'Mark', value: 'mark' },
+          { text: 'Color', value: 'color' },
+          { text: 'Capacity', value: 'capacity' }
+        ]
+      }
     }
-  }),
+  },
+  computed: {
+    items() {
+      return this.$store.getters['buses/list']
+    }
+  },
   methods: {
     onNewItem() {
       this.$refs.modal.open(new Model())
@@ -65,8 +71,7 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch('buses/readAll').then((res) => {
-      this.table.items = res
+    this.$store.dispatch('buses/readAll').then(() => {
       this.table.isLoading = false
     })
   }

@@ -1,10 +1,16 @@
 import form from '@/components/DriverForm.vue'
 
 export default class {
-  id = null
   tabnumber = ''
   name = ''
   bus = null
+  graphic = {
+    date: '',
+    items: [],
+    status: ''
+  }
+  ways = []
+  phone = ''
 
   constructor(params) {
     Object.assign(this, params)

@@ -57,6 +57,7 @@ export default {
     async open(model) {
       this.dialog.isLoading = true
       this.dialog.isOpen = true
+      this.dialog.oldModel = {}
       if(model._id) {
         this.dialog.model = await this.$store.dispatch(`${model.type}/read`, { id: model._id })
       } else {
@@ -73,6 +74,7 @@ export default {
       }
     },
     async save() {
+      this.dialog.oldModel = {}
       if(this.dialog.model._id) {
         this.dialog.model = await this.$store.dispatch(`${this.dialog.model.type}/update`, { updated_item: this.dialog.model })
       } else {

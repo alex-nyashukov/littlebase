@@ -50,8 +50,8 @@ export default {
         search: '',
         headers: [
           { text: 'Tabnumber', value: 'tabnumber' },
-          { text: 'Busnumber' },
-          { text: 'Name' }
+          { text: 'Busnumber', value: 'bus.busnumber' },
+          { text: 'Name', value: 'name' }
         ]
       }
     }

@@ -2,7 +2,7 @@ import Model from '@/models/bus'
 
 import BaseCRUDStore from '@/models/base_crud_store'
 
-var store = BaseCRUDStore(Model, '')
+var store = BaseCRUDStore(Model, '/api/buses')
 
 export const state = store.state
 

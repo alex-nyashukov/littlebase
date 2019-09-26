@@ -1,8 +1,13 @@
 import form from '@/components/BusForm.vue'
 
 export default class {
-  id = null
   busnumber = ''
+  color = ''
+  mark = ''
+  capacity = ''
+  drivers = []
+  way = null
+  status = ''
 
   constructor(params) {
     Object.assign(this, params)
