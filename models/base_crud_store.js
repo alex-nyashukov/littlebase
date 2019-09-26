@@ -13,12 +13,12 @@ export default function(Model, url) {
         state.list = list.map((value) => (new Model(value)))
       },
       create_item(state, { item }) {
-        state.list.push(item)
+        state.list.push(new Model(item))
       },
       update_item(state, { item }) {
         state.list = state.list.map((value) => {
           if(value.id == item.id) {
-            return item
+            return new Model(item)
           }
           return value
         })
@@ -43,7 +43,7 @@ export default function(Model, url) {
         return new Promise(async (resolve, reject) => {
           console.log(id)
           // ---Заглушка
-          const item = await this.$axios.$get(`/api/records/drivers/${id}`)
+          const item = await this.$axios.$get(`/api/drivers/${id}`)
           // ---
           resolve(new Model(item))
         })
@@ -51,8 +51,7 @@ export default function(Model, url) {
       create({ commit }, { new_item }) {
         return new Promise(async (resolve, reject) => {
           // ---Заглушка
-          const id = await this.$axios.$post(`/api/records/drivers`, new_item)
-          const item = new Model({...new_item, id: id})
+          const item = await this.$axios.$post(`/api/drivers`, new_item)
           // ---
           commit('create_item', { item })
           resolve(item)
@@ -61,9 +60,9 @@ export default function(Model, url) {
       update({ commit }, { updated_item }) {
         return new Promise(async (resolve, reject) => {
           // ---Заглушка
-          await this.$axios.$put(`/api/records/drivers/${updated_item.id}`, updated_item)
+          let item = await this.$axios.$put(`/api/drivers/${updated_item.id}`, updated_item)
           // ---
-          commit('update_item', { updated_item })
+          commit('update_item', { item })
           resolve()
         })
       },

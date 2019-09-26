@@ -1,11 +1,7 @@
 const express = require('express')
 const consola = require('consola')
 const { Nuxt, Builder } = require('nuxt')
-const app = express()
-
-app.get('/api/drivers', function(req, res) {
-  res.json([{ id: 1, name: 'Ivanov', tabnumber: '1111'},{ id: 2, name: 'Petrov', tabnumber: '2222'}])
-})
+const app = require('./app')
 
 // Import and Set Nuxt.js options
 const config = require('../nuxt.config.js')
