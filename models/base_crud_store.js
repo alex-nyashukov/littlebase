@@ -1,3 +1,5 @@
+var apiUrl = 'http://194.67.90.97:8080'
+
 export default function(Model, url) {
   return {
     state: () => ({
@@ -33,7 +35,7 @@ export default function(Model, url) {
       readAll({ commit }) {
         return new Promise(async (resolve, reject) => {
           // ---Заглушка
-          const data = await this.$axios.$get('/api/drivers')
+          const data = await this.$axios.$get(`${apiUrl}/api/drivers`)
           // ---
           commit('set_list', { list: data })
           resolve()
