@@ -33,6 +33,7 @@
 export default {
   data: () => ({
     menu: [
+      { title: 'Home', link: '/' },
       { title: 'Drivers', link: '/drivers' },
       { title: 'Buses', link: '/buses' },
       { title: 'Routes', link: '/routes' },
@@ -45,5 +46,13 @@ export default {
 </script>
 
 <style>
+.v-card {
+  transition: all .2s ease;
+}
 
+.fade-enter,
+.fade-leave-active {
+  opacity: 0;
+  transform: translate(0, 30px);
+}
 </style>

@@ -1,6 +1,6 @@
 import form from '@/components/WayForm.vue'
 
-export default class {
+export default class Way {
   title = ''
   route = null
   isTwoSmene = false

@@ -40,6 +40,7 @@ import Model from '@/models/bus'
 import AppModal from '@/components/TheModal.vue'
 
 export default {
+  transition: 'fade', 
   components: {
     AppModal
   },

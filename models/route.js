@@ -1,6 +1,6 @@
 import form from '@/components/RouteForm.vue'
 
-export default class {
+export default class Route {
   title = ''
   ways = []
 

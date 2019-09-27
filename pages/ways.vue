@@ -43,6 +43,7 @@ import Model from '@/models/way'
 import AppModal from '@/components/TheModal.vue'
 
 export default {
+  transition: 'fade', 
   components: {
     AppModal
   },

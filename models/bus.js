@@ -1,6 +1,6 @@
 import form from '@/components/BusForm.vue'
 
-export default class {
+export default class Bus {
   busnumber = ''
   color = ''
   mark = ''
