@@ -1,5 +1,7 @@
 import Excel from "exceljs/dist/exceljs"
 
+import Driver from '@/models/driver'
+
 export class AgreementExcel {
     static async render({ drivers, template }) {
         const workbook = new Excel.Workbook();
@@ -28,102 +30,70 @@ export class AgreementExcel {
     }
 }
 
-// export class A4Excel extends ExcelRenderer {
-//     constructor(template) {
-//         super(template)
-//     }
-//     static async getData() {
-//         const getDrivers = $axios.get(`http://134.0.119.170/api/drivers`)
-//         const getTemplate = $axios.get("/a4.xlsx", {
-//             responseType: "arraybuffer"
-//         })
+export class A4Excel {
+    static async render({ drivers, template }) {
+        const workbook = new Excel.Workbook();
+        await workbook.xlsx.load(template)
 
-//         const [driversRes, templateRes] = await Promise.all([getDrivers, getTemplate])
+        var worksheet = workbook.getWorksheet('main')
+        var row
+        var rowNumber = 10
+        var columnNumber
+        drivers.forEach(driver => {
+            row = worksheet.getRow(rowNumber)
 
-//         const drivers = driversRes.data
-//         const template = templateRes.data
-//         return { drivers, template }
-//     }
-//     static async render() {
-//         const { drivers, template } = await this.getData()
-//         const workbook = new Excel.Workbook();
-//         await workbook.xlsx.load(template)
+            columnNumber = 3
+            row.getCell(columnNumber)
+                .value = driver.name
+            columnNumber = 6
+            row.getCell(columnNumber)
+                .value = driver.tabnumber
 
-//         var worksheet = workbook.getWorksheet('main')
-//         var row
-//         var rowNumber = 10
-//         var columnNumber
-//         drivers.forEach(driver => {
-//             row = worksheet.getRow(rowNumber)
+            columnNumber = 10
+            new Driver(driver).statusesByDate('2019-09-01', 30, true)
+                .forEach((status) => {
+                    row.getCell(columnNumber)
+                        .value = status
+                    columnNumber++
+                })
+            rowNumber++
+        })
 
-//             columnNumber = 3
-//             row.getCell(columnNumber)
-//                 .value = driver.name
-//             columnNumber = 6
-//             row.getCell(columnNumber)
-//                 .value = driver.tabnumber
+        return await workbook.xlsx.writeBuffer();
+    }
+}
 
-//             columnNumber = 10
-//             new Driver(driver).statusesByDate('2019-09-01', 30, true)
-//                 .forEach((status) => {
-//                     row.getCell(columnNumber)
-//                         .value = status
-//                     columnNumber++
-//                 })
-//             rowNumber++
-//         })
+export class A3Excel {
+    static async render({ drivers, template }) {
+        const workbook = new Excel.Workbook();
+        await workbook.xlsx.load(template)
 
-//         return await workbook.xlsx.writeBuffer();
-//     }
-// }
+        var worksheet = workbook.getWorksheet('main')
 
-// export class A3Excel extends ExcelRenderer {
-//     constructor(template) {
-//         super(template)
-//     }
-//     static async getData() {
-//         const getDrivers = $axios.get(`http://134.0.119.170/api/drivers`)
-//         const getTemplate = $axios.get("/a3.xlsx", {
-//             responseType: "arraybuffer"
-//         })
+        var row
+        var rowNumber = 10
+        var columnNumber
+        drivers.forEach(driver => {
+            row = worksheet.getRow(rowNumber)
 
-//         const [driversRes, templateRes] = await Promise.all([getDrivers, getTemplate])
+            columnNumber = 3
+            row.getCell(columnNumber)
+                .value = driver.name
+            columnNumber = 6
+            row.getCell(columnNumber)
+                .value = driver.tabnumber
 
-//         const drivers = driversRes.data
-//         const template = templateRes.data
-//         return { drivers, template }
-//     }
-//     static async render() {
-//         const { drivers, template } = await this.getData()
-//         const workbook = new Excel.Workbook();
-//         await workbook.xlsx.load(template)
+            columnNumber = 10
+            new Driver(driver).statusesByDate('2019-09-01', 30, true)
+                .forEach((status) => {
+                    row.getCell(columnNumber)
+                        .value = status
+                    columnNumber++
+                })
+            rowNumber++
+        })
 
-//         var worksheet = workbook.getWorksheet('main')
-
-//         var row
-//         var rowNumber = 10
-//         var columnNumber
-//         drivers.forEach(driver => {
-//             row = worksheet.getRow(rowNumber)
-
-//             columnNumber = 3
-//             row.getCell(columnNumber)
-//                 .value = driver.name
-//             columnNumber = 6
-//             row.getCell(columnNumber)
-//                 .value = driver.tabnumber
-
-//             columnNumber = 10
-//             new Driver(driver).statusesByDate('2019-09-01', 30, true)
-//                 .forEach((status) => {
-//                     row.getCell(columnNumber)
-//                         .value = status
-//                     columnNumber++
-//                 })
-//             rowNumber++
-//         })
-
-//         return await workbook.xlsx.writeBuffer();
-//     }
-// }
+        return await workbook.xlsx.writeBuffer();
+    }
+}
 

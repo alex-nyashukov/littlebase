@@ -37,18 +37,30 @@
 
 <script>
 import FileSaver from "file-saver"
-import { AgreementExcel } from '@/models/excel'
+import { AgreementExcel, A3Excel, A4Excel } from '@/models/excel'
 
 export default {
   transition: 'fade', 
   data() {
     return {
       downloads: [
-        { title: 'А3', month: 'Январь', renderer: {}, code: 'a3', getData: () => {
-          
+        { title: 'А3', month: 'Январь', renderer: A3Excel, code: 'a3', getData: async () => {
+          await Promise.all([
+            this.$store.dispatch('drivers/readAll'),
+            this.$store.dispatch('templates/download', { filename: 'a3.xlsx' })
+          ])
+          let drivers = this.$store.getters['drivers/list']
+          let template = this.$store.getters['templates/template']('a3.xlsx')
+          return { drivers, template }
         }},
-        { title: 'А4', month: 'Январь', renderer: {}, code: 'a4', getData: () => {
-          
+        { title: 'А4', month: 'Январь', renderer: A4Excel, code: 'a4', getData: async () => {
+          await Promise.all([
+            this.$store.dispatch('drivers/readAll'),
+            this.$store.dispatch('templates/download', { filename: 'a4.xlsx' })
+          ])
+          let drivers = this.$store.getters['drivers/list']
+          let template = this.$store.getters['templates/template']('a4.xlsx')
+          return { drivers, template }
         } },
         { title: 'Согласие', month: 'Январь', renderer: AgreementExcel, code: 'agreement', getData: async () => {
           await Promise.all([

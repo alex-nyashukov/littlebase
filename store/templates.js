@@ -19,9 +19,6 @@ export const mutations = {
 export const actions = {
   download({ state, commit }, { filename }) {
     return new Promise(async (resolve, reject) => {
-      if(typeof state.templates[filename] !== 'undefined') {
-        resolve()
-      }
       const { data } = await this.$axios.get("/"+filename, {
         responseType: "arraybuffer"
       })
