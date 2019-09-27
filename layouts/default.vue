@@ -47,7 +47,7 @@ export default {
 
 <style>
 .fade {
-  transition: .3s all ease;
+  transition: .3s all ease !important;
 }
 
 .fade-enter,
