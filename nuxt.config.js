@@ -54,7 +54,7 @@ module.exports = {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseURL: dev ? '' : 'http://194.67.90.97:8080'
+    baseURL: dev ? '' : 'http://194.67.90.97'
   },
   vuetify: {
     icons: {

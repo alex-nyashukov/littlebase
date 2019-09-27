@@ -57,7 +57,7 @@
                 <v-icon color="white">fa-sign-out-alt</v-icon>
               </v-btn>
             </template>
-            <span>Save and close</span>
+            <span>Сохранить и выйти</span>
           </v-tooltip>
         </template>
       </v-card-actions>
@@ -80,7 +80,7 @@ export default {
       return JSON.stringify(this.dialog.model) !== JSON.stringify(this.dialog.oldModel) 
     },
     dialogTitle() {
-      return this.dialog.model._id ? 'Edit item' : 'New item'
+      return this.dialog.model._id ? 'Редактирование записи' : 'Создание записи '
     }
   },
   methods: {
