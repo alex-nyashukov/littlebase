@@ -45,10 +45,10 @@
         </thead>
         <tbody>
           <tr v-for="row in report.workTable" :key="row['Автобус']._id">
-            <td>{{ row['Автобус'].busnumber }}</td>
-            <td>{{ row['Первая см.'] !== undefined ? row['Первая см.'].tabnumber : '' }}</td>
-            <td>{{ row['Вторая см.'] !== undefined ? row['Вторая см.'].tabnumber : '' }}</td>
-            <td>{{ row['Рабочий'] !== undefined ? row['Рабочий'].tabnumber : '' }}</td>
+            <td><v-chip>{{ row['Автобус'].busnumber }}</v-chip></td>
+            <td><v-chip v-for="driver in row['Первая см.']" :key="driver._id">{{ driver.tabnumber }}</v-chip></td>
+            <td><v-chip v-for="driver in row['Вторая см.']" :key="driver._id">{{ driver.tabnumber }}</v-chip></td>
+            <td><v-chip v-for="driver in row['Рабочий']" :key="driver._id">{{ driver.tabnumber }}</v-chip></td>
           </tr>
         </tbody>
       </v-simple-table>
@@ -75,9 +75,9 @@
             </thead>
             <tbody>
               <tr v-for="(row, i) in report.driverReserveTable" :key="i">
-                <td>{{ row['Первая см.'] !== undefined ? row['Первая см.'].tabnumber : '' }}</td>
-                <td>{{ row['Вторая см.'] !== undefined ? row['Вторая см.'].tabnumber : '' }}</td>
-                <td>{{ row['Рабочий'] !== undefined ? row['Рабочий'].tabnumber : '' }}</td>
+                <td><v-chip v-for="driver in row['Первая см.']" :key="driver._id">{{ driver.tabnumber }}</v-chip></td>
+                <td><v-chip v-for="driver in row['Вторая см.']" :key="driver._id">{{ driver.tabnumber }}</v-chip></td>
+                <td><v-chip v-for="driver in row['Рабочий']" :key="driver._id">{{ driver.tabnumber }}</v-chip></td>
               </tr>
             </tbody>
           </v-simple-table>

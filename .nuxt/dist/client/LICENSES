@@ -40,3 +40,12 @@
  * @license MIT
  * @see https://github.com/alexsasharegan/vue-functional-data-merge
  */
+
+/*!
+ * The buffer module from node.js, for the browser.
+ *
+ * @author   Feross Aboukhadijeh <https://feross.org>
+ * @license  MIT
+ */
+
+/*! http://mths.be/fromcodepoint v0.1.0 by @mathias */

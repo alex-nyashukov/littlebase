@@ -16,7 +16,7 @@ export default class Report {
             'СВАРЗ': []
         }
         buses.forEach((bus) => {
-            let row = {}
+            let row = {'Рабочий': [], 'Первая см.': [], 'Вторая см.': []}
             let workedDriversCount = 0
             bus.drivers.forEach((driver) => {
                 driver = new Driver(driver)
@@ -27,13 +27,7 @@ export default class Report {
                 }
                 if(['Рабочий', 'Первая см.', 'Вторая см.'].includes(status)) {
                     workedDriversCount++
-                    if(row[status]) {
-                        this.errors.push(`Водители ${row[status].tabnumber} и ${driver.tabnumber} заняли одну смену на автобусе ${bus.busnumber}!`)
-                    }
-                    row[status] = driver
-                    if(row['Рабочий'] && row['Первая см.'] || row['Рабочий'] && row['Вторая см.']) {
-                        this.errors.push(`У водителей автобуса ${bus.busnumber} несовместимые смены`)
-                    }
+                    row[status].push(driver)
                 } else {
                     this.outDrivers[status].push(driver)
                 }
