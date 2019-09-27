@@ -8,11 +8,11 @@
       :timeout="60000"
       top
     >
-      {{ snackbar.text }}
+      {{ snackbar.queye[snackbar.current] }}
       <v-btn
         dark
         text
-        @click="snackbar.isOpen = false"
+        @click="swapSnackbar"
       >
         Close
       </v-btn>
@@ -100,7 +100,8 @@ export default {
   data: () => ({
     snackbar: { 
       isOpen: false,
-      text: ''
+      queye: [],
+      current: 0,
     },
     date: moment().format("YYYY-MM-DD"),
     menu: false,
@@ -111,10 +112,15 @@ export default {
       return this.date ? moment(this.date).format("DD/MM/YYYY") : "";
     },
     report() {
+      this.snackbar.isOpen = false
       let report = new Report(this.date, this.buses)
       if(report.errors.length > 0) {
-        this.snackbar.text = report.errors[0]
-        this.snackbar.isOpen = true
+        setTimeout(() => {
+          this.snackbar.current = 0
+          this.snackbar.queye = report.errors
+          this.snackbar.isOpen = true
+          console.log(this.snackbar)
+        }, 300)
       }
       return report
     },
@@ -123,6 +129,14 @@ export default {
     }
   },
   methods: {
+    swapSnackbar() {
+        if(this.snackbar.queye[this.snackbar.current+1]) {
+          this.snackbar.current++
+        } else {
+          this.snackbar.current = 0
+          this.snackbar.isOpen = false
+        }
+    },
     nextDay() {
       this.date = moment(this.date).add(1, 'd').format('YYYY-MM-DD')
     },
