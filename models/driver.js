@@ -2,26 +2,27 @@ import moment from 'moment'
 
 import form from '@/components/DriverForm.vue'
 
-const shortStatuses = {
-  'Рабочий': 'Р',
-  'Первая см.': '1',
-  'Вторая см.': '2',
-  'Выходной': 'В',
-  'Больничный': 'Б',
-  'Отпуск': 'О'
-}
-
-export default class {
+export default class Driver {
   tabnumber = ''
   name = ''
   bus = null
   graphic = {
     date: '',
     items: [],
-    status: ''
+    status: '',
+    exceptions: []
   }
   ways = []
   phone = ''
+
+  shortStatuses = {
+    'Рабочий': 'Р',
+    'Первая см.': '1',
+    'Вторая см.': '2',
+    'Выходной': 'В',
+    'Больничный': 'Б',
+    'Отпуск': 'О'
+  }
 
   constructor(params) {
     Object.assign(this, params)
@@ -32,7 +33,7 @@ export default class {
     return form
   }
 
-  statusesByDate({date, count, isShort=false, withExeptions=false, withDate=false}) {
+  statusesByDate({date, count, isShort=false, withExceptions=false, withDate=false}) {
     var statuses = []
     this.graphic.items.forEach((value) => {
         for (var i = 0; i < value.days; i++) {
@@ -44,9 +45,26 @@ export default class {
     var currentDate = moment(date)
     var graphicDate = moment(this.graphic.date)
     for (var i = 0; i < count; i++) {
-      let newItem = statuses[((currentDate.diff(graphicDate, 'days') % statuses.length) + statuses.length) % statuses.length]
-      if(isShort) {
-        newItem = shortStatuses[newItem]
+      let newItem = null
+      if(withExceptions) {
+        if(this.graphic.status) {
+          newItem = { status: this.graphic.status, isException: true }
+        } else {
+          let temp = this.findExceptionByDate(currentDate.format('YYYY-MM-DD'))
+          if(temp) {
+            newItem = { status: temp, isException: true}
+          } else {
+            newItem = { status: newItem = statuses[((currentDate.diff(graphicDate, 'days') % statuses.length) + statuses.length) % statuses.length], isException: false}
+          }
+        }
+        if(isShort) {
+          newItem.status = this.shortStatuses[newItem.status]
+        }
+      } else {
+        newItem = statuses[((currentDate.diff(graphicDate, 'days') % statuses.length) + statuses.length) % statuses.length]
+        if(isShort) {
+          newItem = this.shortStatuses[newItem]
+        }
       }
       if(withDate) {
         let date_as_string = currentDate.format('YYYY-MM-DD')
@@ -57,5 +75,14 @@ export default class {
       currentDate.add(1, 'days')
     }
     return result
-}
+  }
+
+  findExceptionByDate(date) {
+    let finded = this.graphic.exceptions.find((value) => (value.date===date))
+    if(finded) {
+      return finded.status
+    } else {
+      return null
+    }
+  }
 }

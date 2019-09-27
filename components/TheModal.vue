@@ -81,6 +81,7 @@ export default {
       } else {
         this.dialog.model = model
       }
+      console.log(this.dialog.model)
       Object.assign(this.dialog.oldModel, this.dialog.model)
       this.dialog.isLoading = false
     },

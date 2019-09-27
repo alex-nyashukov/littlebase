@@ -6,11 +6,12 @@
         <v-btn fab small elevation="1" @click="$refs.calendar.next()"><v-icon>fa-chevron-right</v-icon></v-btn>
     </v-toolbar>
     <v-calendar 
-      @change="onChange"
+      @change="onChangeCalendar"
       ref="calendar"
       v-model="date"
       :weekdays="[1, 2, 3, 4, 5, 6, 0]" 
-      locale="ru">
+      locale="ru"
+    >
       <template v-slot:day-label="{ day, date }">
         <v-menu offset-y hidden>
           <template v-slot:activator="{ on }">
@@ -19,17 +20,22 @@
                 justify-start
                 :class="date == today? 'primary--text font-weight-bold' : 'grey--text'"
               >{{ day }}</v-layout>
-              <v-layout justify-end>{{ statuses[date] }}</v-layout>
+              <v-layout v-if="!statuses[date]"></v-layout>
+              <v-layout v-else justify-end :class="statuses[date].isException ? 'orange--text' : ''">{{ statuses[date].status }}</v-layout>
             </v-layout>
           </template>
-          <v-list>
-            <v-list-item
-              v-for="(item, index) in [{title: 'item 1'}, {title: 'item 2'}, {title: 'item 2'}, {title: 'item 2'}, {title: 'item 2'}, {title: 'item 2'}]"
-              :key="index"
-            >
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
-            </v-list-item>
-          </v-list>
+          <v-btn-toggle
+            @change="(value) => { onChangeToggle(date, value) }"
+            :value="null"
+          >
+            <v-btn :value="null"></v-btn>
+            <v-btn value="Рабочий">Р</v-btn>
+            <v-btn value="Первая см.">1</v-btn>
+            <v-btn value="Вторая см.">2</v-btn>
+            <v-btn value="Выходной">В</v-btn>
+            <v-btn value="Больничный">Б</v-btn>
+            <v-btn value="Отпуск">О</v-btn>
+          </v-btn-toggle>
         </v-menu>
       </template>
     </v-calendar>
@@ -44,19 +50,42 @@ export default {
   data: () => ({
     today: moment().format("YYYY-MM-DD"),
     date: moment().format("YYYY-MM-DD"),
-    statuses: {}
+    statuses: []
   }),
   watch: {
     item: {
       handler: function(val){
         this.statuses = this.calculate_statuses()
+        console.log(this.statuses)
       },
       deep: true
     }
   },
   methods: {
-    onChange() {
+    onChangeToggle(date, status) {
+      if(status) {
+        let changed = 0
+        this.item.graphic.exceptions.map((value) => {
+          if(value.date === date) {
+            changed++
+            value.status = status
+            return value
+          } else {
+            return value
+          }
+        })
+        if(!changed) {
+          this.item.graphic.exceptions.push({ date, status })
+        }
+      } else {
+        this.item.graphic.exceptions = this.item.graphic.exceptions.filter((value) => {
+          return value.date !== date
+        })
+      }
+    },
+    onChangeCalendar() {
       this.statuses = this.calculate_statuses()
+        console.log(this.statuses)
     },
     calculate_statuses() {
       let start_of_month = moment(this.date).startOf('month')
@@ -64,7 +93,7 @@ export default {
       let start_of_calendar = start_of_month.subtract((start_of_month.day()+6)%7, 'd')
       let end_of_calendar = end_of_month.add(6-((end_of_month.day()+6)%7), 'd')
       let difference = end_of_calendar.diff(start_of_calendar, 'd')
-      return this.item.statusesByDate({date: start_of_calendar, count: difference+1, isShort: true, withDate: true})
+      return this.item.statusesByDate({date: start_of_calendar, count: difference+1, isShort: true, withExceptions: true, withDate: true})
     }
   },
   mounted() {

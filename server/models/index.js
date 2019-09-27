@@ -7,10 +7,11 @@ var driverSchema = mongoose.Schema({
     graphic: {
         date: String,
         items: Array,
-        status: String
+        status: String,
+        exceptions: Array
     },
     bus: { type: mongoose.Schema.Types.ObjectId, ref: 'bus', childPath:"drivers" },
-    ways: [],
+    ways: Array,
     phone: String
 })
 driverSchema.plugin(relationship, { relationshipPathName:'bus' })
