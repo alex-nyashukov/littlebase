@@ -27,11 +27,20 @@
         <component :is="dialog.model.form" :item="dialog.model"></component>
       </v-card-text>
       <v-card-actions>
-        <v-btn v-if="this.dialog.model._id" class="ma-3" dark color="red lighten-2" @click="remove">Удалить</v-btn>
+        <v-btn v-if="this.dialog.model._id" class="ma-3" dark color="red lighten-2" @click="remove">
+            <v-icon class="hidden-md-and-up">fa-trash-alt</v-icon>
+            <span class="hidden-sm-and-down">Удалить</span>
+        </v-btn>
         <v-spacer></v-spacer>
-        <v-btn class="ma-3" @click="onClose">Закрыть</v-btn>
+        <v-btn class="ma-3" @click="onClose">
+            <v-icon class="hidden-md-and-up">fa-door-open</v-icon>
+            <span class="hidden-sm-and-down">Закрыть</span>
+        </v-btn>
         <template class="ma-3">
-          <v-btn style="border-top-right-radius: 0; border-bottom-right-radius: 0" dark color="green lighten-2" @click="save">Сохранить</v-btn>
+          <v-btn style="border-top-right-radius: 0; border-bottom-right-radius: 0" dark color="green lighten-2" @click="save">
+            <v-icon class="hidden-md-and-up">fa-save</v-icon>
+            <span class="hidden-sm-and-down">Сохранить</span>
+          </v-btn>
           <v-tooltip top>
             <template v-slot:activator="{ on }">
               <v-btn 
