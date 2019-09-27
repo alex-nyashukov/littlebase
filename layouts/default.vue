@@ -33,12 +33,12 @@
 export default {
   data: () => ({
     menu: [
-      { title: 'Home', link: '/' },
-      { title: 'Drivers', link: '/drivers' },
-      { title: 'Buses', link: '/buses' },
-      { title: 'Routes', link: '/routes' },
-      { title: 'Ways', link: '/ways' },
-      { title: 'Downloads', link: '/downloads' },
+      { title: 'Главная', link: '/' },
+      { title: 'Водители', link: '/drivers' },
+      { title: 'Автобусы', link: '/buses' },
+      { title: 'Маршруты', link: '/routes' },
+      { title: 'Выходы', link: '/ways' },
+      { title: 'Выгрузки', link: '/downloads' },
     ],
     drawer: false
   })

@@ -1,11 +1,11 @@
 <template>
   <v-card class="fade mt-5">
     <v-card-title>
-      Drivers
+      Водители
       <v-spacer></v-spacer>
       <v-text-field
         v-model="table.search"
-        label="Search"
+        label="Поиск"
       ></v-text-field>
       <v-btn
         fab
@@ -50,9 +50,9 @@ export default {
         isLoading: true,
         search: '',
         headers: [
-          { text: 'Tabnumber', value: 'tabnumber' },
-          { text: 'Busnumber', value: 'bus.busnumber' },
-          { text: 'Name', value: 'name' }
+          { text: 'Табельный номер', value: 'tabnumber' },
+          { text: 'Б.н. автобуса', value: 'bus.busnumber' },
+          { text: 'Ф.И.О.', value: 'name' }
         ]
       }
     }

@@ -1,11 +1,11 @@
 <template>
   <v-card class="mt-5">
     <v-card-title>
-      Buses
+      Автобусы
       <v-spacer></v-spacer>
       <v-text-field
         v-model="table.search"
-        label="Search"
+        label="Поиск"
       ></v-text-field>
       <v-btn
         fab
@@ -50,10 +50,10 @@ export default {
         isLoading: true,
         search: '',
         headers: [
-          { text: 'Busnumber', value: 'busnumber' },
-          { text: 'Mark', value: 'mark' },
-          { text: 'Color', value: 'color' },
-          { text: 'Capacity', value: 'capacity' }
+          { text: 'Бортовой номер', value: 'busnumber' },
+          { text: 'Марка', value: 'mark' },
+          { text: 'Цвет', value: 'color' },
+          { text: 'Вместимость', value: 'capacity' }
         ]
       }
     }

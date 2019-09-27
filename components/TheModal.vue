@@ -11,7 +11,7 @@
       dark
     >
       <v-card-text>
-        Please stand by
+        Идет загрузка...
         <v-progress-linear
           indeterminate
           color="white"

@@ -1,11 +1,11 @@
 <template>
   <v-card class="mt-5">
     <v-card-title>
-      Ways
+      Выходы
       <v-spacer></v-spacer>
       <v-text-field
         v-model="table.search"
-        label="Search"
+        label="Поиск"
       ></v-text-field>
       <v-btn
         fab
@@ -53,8 +53,8 @@ export default {
         isLoading: true,
         search: '',
         headers: [
-          { text: 'Title', value: 'title' },
-          { text: 'Route', value: 'route.title' },
+          { text: 'Название', value: 'title' },
+          { text: 'Номер маршрута', value: 'route.title' },
         ]
       }
     }

@@ -7,19 +7,19 @@
         <span class="ml-3 white--text">A3</span>
       </v-card-title>
       <v-card-text class="pt-2">
-        <v-select :items="items" label="Month"></v-select>
-        <v-file-input label="Template">Template</v-file-input>
+        <v-select :items="items" label="Месяц"></v-select>
+        <v-file-input label="Шаблон"></v-file-input>
         <v-layout row justify-space-between>
           <v-flex>
-          <v-btn rounded color="green" dark>Upload</v-btn>
+          <v-btn rounded color="green" dark>Загрузить</v-btn>
           </v-flex>
           <v-flex>
-          <v-btn rounded color="green" dark>Download </v-btn>
+          <v-btn rounded color="green" dark>Скачать </v-btn>
           </v-flex>
         </v-layout>
       </v-card-text>
       <v-card-actions class="pa-0">
-        <v-btn height="52" style="font-size: 1.4rem; border-top-left-radius: 0; border-top-right-radius: 0" block color="green" dark>Download</v-btn>
+        <v-btn height="52" style="font-size: 1.4rem; border-top-left-radius: 0; border-top-right-radius: 0" block color="green" dark>Скачать</v-btn>
       </v-card-actions>
     </v-card>
   </v-flex>

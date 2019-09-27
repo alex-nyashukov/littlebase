@@ -4,11 +4,11 @@
     <v-select
       v-model="graphic.status"
       :items="[{value: null, text: ''}, 'Рабочий', 'Выходной', 'Первая см.', 'Вторая см.', 'Больничный', 'Отпуск']"
-      label="Status"
+      label="Статус"
     ></v-select>
     <v-menu v-model="menu" :close-on-content-click="false" max-width="290">
       <template v-slot:activator="{ on }">
-        <v-text-field :value="formattedDate" clearable label="Date" readonly v-on="on"></v-text-field>
+        <v-text-field :value="formattedDate" clearable label="Дата" readonly v-on="on"></v-text-field>
       </template>
       <v-date-picker v-model="graphic.date" no-title @change="menu = false"></v-date-picker>
     </v-menu>
@@ -18,7 +18,7 @@
           v-model="item.status"
           single-line
           :items="['Рабочий', 'Выходной', 'Первая см.', 'Вторая см.']"
-          label="Status"
+          label="Статус"
         ></v-select>
       </v-flex>
       <v-flex xs4>
@@ -26,7 +26,7 @@
           v-model="item.days"
           single-line
           :items="['1', '2', '3', '4', '5', '6', '7']"
-          label="Days"
+          label="Дней"
         ></v-select>
       </v-flex>
       <v-layout xs2 justify-center align-center>

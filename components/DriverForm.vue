@@ -2,19 +2,19 @@
 <v-form ref="form">
     <v-layout wrap justify-space-between>
       <v-flex xs12 md6>
-        <v-text-field v-model="item.tabnumber" label="Tabnumber"></v-text-field>
-        <v-text-field v-model="item.name" label="Name"></v-text-field>
-        <v-select v-model="item.bus" :items="buses" label="Busnumber"></v-select>
+        <v-text-field v-model="item.tabnumber" label="Табельный номер"></v-text-field>
+        <v-text-field v-model="item.name" label="Ф.И.О."></v-text-field>
+        <v-select v-model="item.bus" :items="buses" label="Б.н. автобуса"></v-select>
         <driver-form-calendar class="mb-3" :item="item"></driver-form-calendar>
       </v-flex>
 
       <v-flex xs12 md5>
-        <v-text-field v-model="item.phone" label="Phone"></v-text-field>
+        <v-text-field v-model="item.phone" label="Номер телефона"></v-text-field>
         <v-select
           v-model="item.ways"
           :items="ways"
           multiple
-          label="Ways"
+          label="Выходы"
         ></v-select>
         <driver-form-graphic :graphic="item.graphic"></driver-form-graphic>
       </v-flex>
