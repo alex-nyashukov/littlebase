@@ -38,15 +38,18 @@
         </v-btn>
         <template class="ma-3">
           <v-btn style="border-top-right-radius: 0; border-bottom-right-radius: 0" dark color="green lighten-2" @click="save">
-            <v-icon class="hidden-md-and-up">fa-save</v-icon>
-            <span class="hidden-sm-and-down">Сохранить</span>
+            <v-progress-circular v-if="dialog.isSaving" indeterminate></v-progress-circular>
+            <template v-else>
+              <v-icon class="hidden-md-and-up">fa-save</v-icon>
+              <span class="hidden-sm-and-down">Сохранить</span>
+            </template>
           </v-btn>
           <v-tooltip top>
             <template v-slot:activator="{ on }">
               <v-btn 
                 v-on="on" 
                 style="border-top-left-radius: 0; border-bottom-left-radius: 0" 
-                class="ml-0" 
+                class="ml-0 hidden-sm-and-down" 
                 dark 
                 color="green lighten-2" 
                 @click="saveAndClose"
@@ -83,6 +86,7 @@ export default {
   methods: {
     async open(model) {
       this.dialog.isLoading = true
+      this.dialog.isSaving = false
       this.dialog.isOpen = true
       this.dialog.oldModel = {}
       if(model._id) {
@@ -90,7 +94,6 @@ export default {
       } else {
         this.dialog.model = model
       }
-      console.log(this.dialog.model)
       Object.assign(this.dialog.oldModel, this.dialog.model)
       this.dialog.isLoading = false
     },
@@ -102,6 +105,7 @@ export default {
       }
     },
     async save() {
+      this.dialog.isSaving = true
       this.dialog.oldModel = {}
       if(this.dialog.model._id) {
         this.dialog.model = await this.$store.dispatch(`${this.dialog.model.type}/update`, { updated_item: this.dialog.model })
@@ -109,6 +113,7 @@ export default {
         this.dialog.model = await this.$store.dispatch(`${this.dialog.model.type}/create`, { new_item: this.dialog.model })
       }
       Object.assign(this.dialog.oldModel, this.dialog.model)
+      this.dialog.isSaving = false
     },
     async saveAndClose() {
       await this.save()
