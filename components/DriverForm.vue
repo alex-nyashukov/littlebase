@@ -5,7 +5,7 @@
         <v-text-field v-model="item.tabnumber" label="Tabnumber"></v-text-field>
         <v-text-field v-model="item.name" label="Name"></v-text-field>
         <v-select v-model="item.bus" :items="buses" label="Busnumber"></v-select>
-        <driver-form-calendar :item="item"></driver-form-calendar>
+        <driver-form-calendar class="mb-3" :item="item"></driver-form-calendar>
       </v-flex>
 
       <v-flex xs12 md5>

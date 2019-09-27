@@ -1,16 +1,33 @@
 <template>
   <v-card>
+    <v-snackbar
+      v-model="snackbar.isOpen"
+      color="red"
+      multi-line
+      right
+      :timeout="60000"
+      top
+    >
+      {{ snackbar.text }}
+      <v-btn
+        dark
+        text
+        @click="snackbar.isOpen = false"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
     <v-card-title>
       <v-flex xs12 sm7 md4>
         <v-layout align-center justify-end>
-          <v-menu v-model="menu" :close-on-content-click="false" full-width max-width="290">
+          <v-menu v-model="menu" :close-on-content-click="false" max-width="290">
             <template v-slot:activator="{ on }">
               <v-text-field flat style="box-shadow: none" class="desable-shadow mr-4" solo hide-details :value="formattedDate" label="Date" readonly v-on="on"></v-text-field>
             </template>
             <v-date-picker v-model="date" no-title @change="menu = false"></v-date-picker>
           </v-menu>
           <v-btn @click="prevDay" color="white" elevation="1" fab small><v-icon>fa-chevron-left</v-icon></v-btn>
-          <v-btn @click="setToday" class="ml-3" color="white" elevation="1" fab small><v-icon>fa-undo-alt</v-icon></v-btn>
+          <v-btn @click="update" class="ml-3" color="white" elevation="1" fab small><v-icon>fa-redo-alt</v-icon></v-btn>
           <v-btn @click="nextDay" class="ml-3" color="white" elevation="1" fab small><v-icon>fa-chevron-right</v-icon></v-btn>
         </v-layout>
       </v-flex>
@@ -81,6 +98,10 @@ import Report from "@/models/report";
 export default {
   transition: 'fade', 
   data: () => ({
+    snackbar: { 
+      isOpen: false,
+      text: ''
+    },
     date: moment().format("YYYY-MM-DD"),
     menu: false,
     headers: []
@@ -90,8 +111,12 @@ export default {
       return this.date ? moment(this.date).format("DD/MM/YYYY") : "";
     },
     report() {
-      console.log(new Report(this.date, this.buses))
-      return new Report(this.date, this.buses)
+      let report = new Report(this.date, this.buses)
+      if(report.errors.length > 0) {
+        this.snackbar.text = report.errors[0]
+        this.snackbar.isOpen = true
+      }
+      return report
     },
     buses() {
       return this.$store.getters['buses/list']
@@ -101,8 +126,8 @@ export default {
     nextDay() {
       this.date = moment(this.date).add(1, 'd').format('YYYY-MM-DD')
     },
-    setToday() {
-      this.date = moment().format('YYYY-MM-DD')
+    update() {
+      this.$store.dispatch('buses/readAll')
     },
     prevDay() {
       this.date = moment(this.date).subtract(1, 'd').format('YYYY-MM-DD')

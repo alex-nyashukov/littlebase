@@ -2,6 +2,7 @@ import Driver from '@/models/driver'
 
 export default class Report {
     constructor(date, buses) {
+        this.errors = []
         this.workTable = []
         this.driverReserveTable = []
         this.busReserve = []
@@ -21,10 +22,14 @@ export default class Report {
                 driver = new Driver(driver)
                 let status = driver.statusesByDate({date: date, count: 1, isShort: false, withExceptions: true})[0].status
                 if(!status) {
+                    this.errors.push(`У водителя ${driver.tabnumber} нет статуса`)
                     return
                 }
                 if(['Рабочий', 'Первая см.', 'Вторая см.'].includes(status)) {
                     workedDriversCount++
+                    if(row[status]) {
+                        this.errors.push(`Водители ${row[status].tabnumber} и ${driver.tabnumber} заняли одну смену на автобусе ${bus.busnumber}!`)
+                    }
                     row[status] = driver
                 } else {
                     this.outDrivers[status].push(driver)

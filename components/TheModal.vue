@@ -22,11 +22,11 @@
     <v-card
       v-else
     >
-      <v-card-title v-text="dialogTitle"></v-card-title>
-      <v-card-text>
+      <v-card-title class="grey lighten-3 elevation-1" style="z-index: 900" v-text="dialogTitle"></v-card-title>
+      <v-card-text class="pt-3">
         <component :is="dialog.model.form" :item="dialog.model"></component>
       </v-card-text>
-      <v-card-actions>
+      <v-card-actions class="grey lighten-3 elevation-1">
         <v-btn v-if="this.dialog.model._id" class="ma-3" dark color="red lighten-2" @click="remove">
             <v-icon class="hidden-md-and-up">fa-trash-alt</v-icon>
             <span class="hidden-sm-and-down">Удалить</span>
