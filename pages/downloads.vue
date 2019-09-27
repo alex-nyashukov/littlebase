@@ -1,34 +1,52 @@
 <template>
-  <v-expansion-panels>
-    <v-expansion-panel>
-      <v-expansion-panel-header>A4</v-expansion-panel-header>
-      <v-expansion-panel-content>
-        <v-toolbar elevation="0">
-          <v-toolbar-items class="align-center">
-            <v-btn text>Download</v-btn>
-          </v-toolbar-items>
-        </v-toolbar>
-      </v-expansion-panel-content>
-    </v-expansion-panel>
-    <v-expansion-panel>
-      <v-expansion-panel-header>A3</v-expansion-panel-header>
-      <v-expansion-panel-content>
-        
-      </v-expansion-panel-content>
-    </v-expansion-panel>
-    <v-expansion-panel>
-      <v-expansion-panel-header>Agreements</v-expansion-panel-header>
-      <v-expansion-panel-content>
-        
-      </v-expansion-panel-content>
-    </v-expansion-panel>
-  </v-expansion-panels>
+<v-layout row>
+  <v-flex xs12 sm6 md4 class="pa-3">
+    <v-card>
+      <v-card-title class="green">
+        <v-icon dark>fa-file-excel</v-icon>
+        <span class="ml-3 white--text">A3</span>
+      </v-card-title>
+      <v-card-text class="pt-2">
+        <v-select :items="items" label="Month"></v-select>
+        <v-file-input label="Template">Template</v-file-input>
+        <v-layout row justify-space-between>
+          <v-flex>
+          <v-btn rounded color="green" dark>Upload</v-btn>
+          </v-flex>
+          <v-flex>
+          <v-btn rounded color="green" dark>Download </v-btn>
+          </v-flex>
+        </v-layout>
+      </v-card-text>
+      <v-card-actions class="pa-0">
+        <v-btn height="52" style="font-size: 1.4rem; border-top-left-radius: 0; border-top-right-radius: 0" block color="green" dark>Download</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-flex>
+</v-layout>
 </template>
 
 <script>
 export default {
   transition: 'fade', 
-
+  data() {
+    return {
+      items: [
+        'Январь',
+        'Февраль',
+        'Март',
+        'Апрель',
+        'Май',
+        'Июнь',
+        'Июль',
+        'Август',
+        'Сентябрь',
+        'Октябрь',
+        'Ноябрь',
+        'Декабрь'
+      ]
+    }
+  }
 }
 </script>
 

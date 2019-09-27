@@ -31,6 +31,9 @@ export default class Report {
                         this.errors.push(`Водители ${row[status].tabnumber} и ${driver.tabnumber} заняли одну смену на автобусе ${bus.busnumber}!`)
                     }
                     row[status] = driver
+                    if(row['Рабочий'] && row['Первая см.'] || row['Рабочий'] && row['Вторая см.']) {
+                        this.errors.push(`У водителей автобуса ${bus.busnumber} несовместимые смены`)
+                    }
                 } else {
                     this.outDrivers[status].push(driver)
                 }
