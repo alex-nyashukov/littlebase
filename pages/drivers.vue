@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mt-5">
+  <v-card class="fade mt-5">
     <v-card-title>
       Drivers
       <v-spacer></v-spacer>

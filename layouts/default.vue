@@ -23,7 +23,7 @@
     </v-app-bar>
     <v-content>
       <v-container>
-        <nuxt></nuxt>
+        <nuxt class="fade"></nuxt>
       </v-container>
     </v-content>
   </v-app>
@@ -46,13 +46,13 @@ export default {
 </script>
 
 <style>
-.v-card {
-  transition: all .2s ease;
+.fade {
+  transition: .3s all ease;
 }
 
 .fade-enter,
 .fade-leave-active {
   opacity: 0;
-  transform: translate(0, 30px);
+  transform: translateY(35px)
 }
 </style>
