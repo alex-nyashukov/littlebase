@@ -30,6 +30,15 @@ busSchema.plugin(relationship, { relationshipPathName:'way' })
 var waySchema = mongoose.Schema({
     title: String,
     route: { type: mongoose.Schema.Types.ObjectId, ref: 'route', childPath:"ways" },
+    times: {
+      durationFirstSmene: String,
+      durationSecondSmene: String,
+      outPark: String,
+      change: String,
+      endWork: String,
+      lunchFirstSmene: String,
+      lunchSecondSmene: String
+    },
     isTwoSmene: Boolean,
     isWeekend: Boolean,
     isWeekday: Boolean,

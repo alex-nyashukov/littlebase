@@ -1,7 +1,6 @@
 <template>
-  <v-layout fill-height justify-center align-center>
-    <v-form @submit="login">
-      <v-card width="400">
+    <v-form @submit="login" style="max-width: 400px; margin: auto">
+      <v-card>
         <v-card-title></v-card-title>
         <v-card-text>
           <v-text-field v-model="username" label="Логин"></v-text-field>
@@ -12,12 +11,14 @@
         </v-card-actions>
       </v-card>
     </v-form>
-  </v-layout>
 </template>
 
 <script>
 export default {
   transition: 'fade',
+  options: {
+    auth: 'guest'
+  },
   data() {
     return {
       username: '',

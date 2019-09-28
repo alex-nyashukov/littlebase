@@ -3,6 +3,15 @@ import form from '@/components/WayForm.vue'
 export default class Way {
   title = ''
   route = null
+  times = {
+    durationFirstSmene: null,
+    durationSecondSmene: null,
+    outPark: null,
+    change: null,
+    endWork: null,
+    lunchFirstSmene: null,
+    lunchSecondSmene: null
+  }
   isTwoSmene = false
   isWeekend = false
   isWeekday = false
