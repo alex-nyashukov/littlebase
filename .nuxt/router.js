@@ -6,6 +6,7 @@ import scrollBehavior from './router.scrollBehavior.js'
 const _3620c087 = () => interopDefault(import('..\\pages\\buses.vue' /* webpackChunkName: "pages_buses" */))
 const _37772f44 = () => interopDefault(import('..\\pages\\downloads.vue' /* webpackChunkName: "pages_downloads" */))
 const _284f7fe4 = () => interopDefault(import('..\\pages\\drivers.vue' /* webpackChunkName: "pages_drivers" */))
+const _1d482f42 = () => interopDefault(import('..\\pages\\login.vue' /* webpackChunkName: "pages_login" */))
 const _2dfb6341 = () => interopDefault(import('..\\pages\\routes.vue' /* webpackChunkName: "pages_routes" */))
 const _6a1463ca = () => interopDefault(import('..\\pages\\ways.vue' /* webpackChunkName: "pages_ways" */))
 const _53a08c2b = () => interopDefault(import('..\\pages\\index.vue' /* webpackChunkName: "pages_index" */))
@@ -31,6 +32,10 @@ export const routerOptions = {
       path: "/drivers",
       component: _284f7fe4,
       name: "drivers"
+    }, {
+      path: "/login",
+      component: _1d482f42,
+      name: "login"
     }, {
       path: "/routes",
       component: _2dfb6341,

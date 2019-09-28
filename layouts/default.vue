@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <v-navigation-drawer
+      v-if="$auth.loggedIn"
       v-model="drawer"
       app
       clipped
@@ -18,8 +19,11 @@
       clipped-left
     >
       <v-app-bar-nav-icon
+        v-if="$auth.loggedIn"
         @click="drawer = !drawer"
       ></v-app-bar-nav-icon>
+      <v-spacer></v-spacer>
+      <v-btn v-if="$auth.loggedIn" rounded color="grey lighten-2" elevation="0" @click="$auth.logout()" dark><v-icon>fa-door-open</v-icon></v-btn>
     </v-app-bar>
     <v-content>
       <v-container>

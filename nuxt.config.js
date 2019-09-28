@@ -6,9 +6,6 @@ module.exports = {
     host: '0.0.0.0',
     port: 8080
   },
-  /*
-  ** Headers of the page
-  */
   head: {
     title: process.env.npm_package_name || '',
     meta: [
@@ -21,38 +18,39 @@ module.exports = {
       { href: "https://use.fontawesome.com/releases/v5.0.13/css/all.css", rel: "stylesheet" }
     ]
   },
-  /*
-  ** Customize the progress-bar color
-  */
   loading: { color: '#fff' },
-  /*
-  ** Global CSS
-  */
   css: [
     
   ],
-  /*
-  ** Plugins to load before mounting the App
-  */
   plugins: [
   ],
-  /*
-  ** Nuxt.js dev-modules
-  */
   buildModules: [
     '@nuxtjs/vuetify',
   ],
-  /*
-  ** Nuxt.js modules
-  */
   modules: [
-    // Doc: https://axios.nuxtjs.org/usage
+    '@nuxtjs/auth',
     '@nuxtjs/axios',
   ],
-  /*
-  ** Axios module configuration
-  ** See https://axios.nuxtjs.org/options
-  */
+  auth: {
+      strategies: {
+          local: {
+              endpoints: {
+                  login: { url: '/api/auth/login', method: 'post', propertyName: 'token.accessToken' },
+                  logout: { url: '/api/auth/logout', method: 'post' },
+                  user: { url: '/api/auth/user', method: 'get', propertyName: 'user' }
+              }
+              // tokenRequired: true,
+              //tokenType: 'jwt'
+          }
+      },
+      redirect: {
+        login: '/login',
+        logout: '/login'
+      },
+  },
+  router: {
+      middleware: ['auth']
+  },
   axios: {
     baseURL: dev ? '' : 'http://194.67.90.97'
   },
@@ -61,13 +59,7 @@ module.exports = {
       iconfont: 'fa',
     },
   },
-  /*
-  ** Build configuration
-  */
   build: {
-    /*
-    ** You can extend webpack config here
-    */
     extend (config, ctx) {
     }
   }

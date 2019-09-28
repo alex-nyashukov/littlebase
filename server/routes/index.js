@@ -8,13 +8,13 @@ var routes = require('./routes')
 var ways = require('./ways')
 
 var api = express.Router()
-// api.use(
-//   jwt({
-//     secret: 'dummy'
-//   }).unless({
-//     path: '/api/auth/login'
-//   })
-// )
+api.use(
+  jwt({
+    secret: 'dummy'
+  }).unless({
+    path: '/api/auth/login'
+  })
+)
 
 module.exports = function(app) {
   api.use('/auth', auth)
