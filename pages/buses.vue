@@ -20,6 +20,7 @@
       </v-btn>
     </v-card-title>
     <v-data-table
+      sort-by="busnumber"
       :loading="table.isLoading"
       :headers="table.headers"
       :search="table.search"

@@ -20,6 +20,7 @@
       </v-btn>
     </v-card-title>
     <v-data-table
+      sort-by="bus.busnumber"
       :loading="table.isLoading"
       :headers="table.headers"
       :search="table.search"
@@ -50,8 +51,8 @@ export default {
         isLoading: true,
         search: '',
         headers: [
-          { text: 'Табельный номер', value: 'tabnumber' },
           { text: 'Б.н. автобуса', value: 'bus.busnumber' },
+          { text: 'Табельный номер', value: 'tabnumber' },
           { text: 'Ф.И.О.', value: 'name' }
         ]
       }

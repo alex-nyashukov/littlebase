@@ -44,7 +44,7 @@ export default {
   data() {
     return {
       downloads: [
-        { title: 'А3', month: 'Январь', renderer: A3Excel, code: 'a3', getData: async () => {
+        { title: 'А3', month: '01', renderer: A3Excel, code: 'a3', getData: async () => {
           await Promise.all([
             this.$store.dispatch('buses/readAll'),
             this.$store.dispatch('templates/download', { filename: 'a3.xlsx' })
@@ -53,16 +53,16 @@ export default {
           let template = this.$store.getters['templates/template']('a3.xlsx')
           return { buses, template }
         }},
-        { title: 'А4', month: 'Январь', renderer: A4Excel, code: 'a4', getData: async () => {
+        { title: 'А4', month: '01', renderer: A4Excel, code: 'a4', getData: async () => {
           await Promise.all([
-            this.$store.dispatch('drivers/readAll'),
+            this.$store.dispatch('buses/readAll'),
             this.$store.dispatch('templates/download', { filename: 'a4.xlsx' })
           ])
-          let drivers = this.$store.getters['drivers/list']
+          let buses = this.$store.getters['buses/list']
           let template = this.$store.getters['templates/template']('a4.xlsx')
-          return { drivers, template }
+          return { buses, template }
         } },
-        { title: 'Согласие', month: 'Январь', renderer: AgreementExcel, code: 'agreement', getData: async () => {
+        { title: 'Согласие', month: '01', renderer: AgreementExcel, code: 'agreement', getData: async () => {
           await Promise.all([
             this.$store.dispatch('drivers/readAll'),
             this.$store.dispatch('templates/download', { filename: 'agreement.xlsx' })
@@ -73,18 +73,18 @@ export default {
         } },
       ],
       items: [
-        'Январь',
-        'Февраль',
-        'Март',
-        'Апрель',
-        'Май',
-        'Июнь',
-        'Июль',
-        'Август',
-        'Сентябрь',
-        'Октябрь',
-        'Ноябрь',
-        'Декабрь'
+        { text: 'Январь', value: '01' },
+        { text: 'Февраль', value: '02' },
+        { text: 'Март', value: '03' },
+        { text: 'Апрель', value: '04' },
+        { text: 'Май', value: '05' },
+        { text: 'Июнь', value: '06' },
+        { text: 'Июль', value: '07' },
+        { text: 'Август', value: '08' },
+        { text: 'Сентябрь', value: '09' },
+        { text: 'Октябрь', value: '10' },
+        { text: 'Ноябрь', value: '11' },
+        { text: 'Декабрь', value: '12' }
       ]
     }
   },

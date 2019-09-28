@@ -4,7 +4,11 @@
       <v-flex xs12 md6>
         <v-text-field v-model="item.busnumber" label="Бортовой номер"></v-text-field>
         <v-select v-model="item.color" :items="['Синий','Зеленый','Голубой']" label="Цвет"></v-select>
-        <v-select v-model="item.mark" :items="['Голаз','Лиаз']" label="Марка"></v-select>
+        <v-select 
+          v-model="item.mark" 
+          :items="['ГОЛАЗ 525110','ЛиАЗ 4292', 'ЛиАЗ 6213','ЛиАЗ 5292', 'Mercedes Benz 2232']" 
+          label="Марка"
+        ></v-select>
         <v-select v-model="item.capacity" :items="['МВ','СВ','БВ','ОБВ']" label="Вместимость"></v-select>
       </v-flex>
 
@@ -29,6 +33,7 @@ export default {
     }
   },
   mounted() {
+    console.log(this.item)
     this.$store.dispatch('ways/readAll')
   }
 }

@@ -1,4 +1,5 @@
 import Excel from "exceljs/dist/exceljs"
+import moment from 'moment'
 
 import Driver from '@/models/driver'
 import { browser } from "process/browser";
@@ -11,12 +12,28 @@ export class AgreementExcel {
         await workbook.xlsx.load(template)
 
         var worksheet = workbook.getWorksheet('main')
+
+        let text_month = [
+            'январе', 
+            'феврале',
+            'марте',
+            'апреле', 
+            'мае',
+            'июне',
+            'июле',
+            'фвгусте', 
+            'сентябре',
+            'октябре',
+            'ноябре', 
+            'декабре'
+        ]
+
         worksheet.getRow(1)
             .getCell(1)
             .value = `Администрация Филиала "Юго-Западный", в лице директора  Р.А. Езохова, \
 предлагает нижеперечисленным водителям 13-ой автоколонны выполнять сверхурочную \
 работу за пределами установленной продолжительности рабочего времени (баланса), \
-а так же работу в выходные, праздничные дни в ${month} месяце 2019  года.`
+а так же работу в выходные, праздничные дни в ${text_month[+month-1]} 2019  года.`
 
         var rowNumber = 3
         var columnNumber = 0
@@ -75,11 +92,18 @@ export class A4Excel {
 }
 
 export class A3Excel {
-    static async render({ buses, template }) {
+    static async render({ buses, template, month }) {
+        let year = '2019'
+
+        let sortedBuses = Array.from(buses)
+        sortedBuses = sortedBuses.sort((a, b) => {
+            return a.busnumber - b.busnumber
+        })
+
         const workbook = new Excel.Workbook();
         await workbook.xlsx.load(template)
 
-        let listCount = Math.ceil(buses.length/4)
+        let listCount = Math.ceil(sortedBuses.length/4)
         if(listCount%2 == 0) {
             listCount++
         }
@@ -88,7 +112,7 @@ export class A3Excel {
         for(let i=0; i<listCount; i++) {
             pages.push([])
             for(let j=0; j<4; j++) {
-                pages[i].push(buses[i*4+j] || {})
+                pages[i].push(sortedBuses[i*4+j] || {})
             }
         }
         // Вставить в начало, чтобы оборот первого листа был пустым
@@ -115,7 +139,7 @@ export class A3Excel {
             drawLeft(worksheet, pages[(N-i)%N])
             drawRight(worksheet, pages[i])
         }
-        
+
         return await workbook.xlsx.writeBuffer();
 
         function drawLeft(worksheet, page) {
@@ -123,52 +147,113 @@ export class A3Excel {
             let columnNumber = 2
 
             page.forEach((bus) => {
-                drawBus(worksheet, bus, rowNumber, columnNumber)
+                drawLeftBus(worksheet, bus, rowNumber, columnNumber)
                 rowNumber += 8
             })
+
+            function drawLeftBus(worksheet, bus, row, column) {
+                let rowNumber = row
+                let columnNumber = column
+    
+                if(!bus.busnumber) {
+                    return
+                }
+    
+                worksheet.getRow(rowNumber)
+                    .getCell(columnNumber)
+                    .value = bus.busnumber
+                
+                let shifts = []
+                switch(bus.drivers.length) {
+                    case 1:
+                        shifts = [4]
+                        break
+                    case 2:
+                        shifts = [2, 6]
+                        break
+                    case 3:
+                        shifts = [1, 4, 7]
+                        break
+                    case 4:
+                        shifts = [1, 3, 5, 7]
+                        break
+                }
+    
+                bus.drivers.forEach((driverData, index) => {
+                    let driver = new Driver(driverData)
+                    drawLeftDriver(worksheet, driver, rowNumber + shifts[index], columnNumber)
+                })
+    
+                function drawLeftDriver(worksheet, driver, row, column) {
+                    let rowNumber = row
+                    let columnNumber = column
+    
+                    worksheet.getRow(rowNumber)
+                        .getCell(columnNumber + 1)
+                        .value = driver.shortName
+                    worksheet.getRow(rowNumber)
+                        .getCell(columnNumber + 2)
+                        .value = driver.tabnumber
+                    
+                    let statuses = driver.statusesByDate({date: `${year}-${month}-01`, count: 12, isShort: true})
+    
+                    for(let i=0; i<12; i++) {
+                        worksheet.getRow(rowNumber)
+                        .getCell(columnNumber + 4 + i)
+                        .value = statuses[i]
+                    }
+    
+                }
+            }
         }
         function drawRight(worksheet, page) {
-            
-        }
-        function drawBus(worksheet, bus, row, column) {
-            let rowNumber = row
-            let columnNumber = column
+            let rowNumber = 9
+            let columnNumber = 20
 
-            if(!bus.busnumber) {
-                return
-            }
-
-            worksheet.getRow(rowNumber)
-                .getCell(columnNumber)
-                .value = bus.busnumber
-            
-            let shifts = []
-            switch(bus.drivers.length) {
-                case 1:
-                    shifts = [4]
-                    break
-                case 2:
-                    shifts = [2, 6]
-                    break
-                case 3:
-                    shifts = [1, 4, 7]
-                    break
-                case 4:
-                    shifts = [1, 3, 5, 7]
-                    break
-            }
-
-            bus.drivers.forEach((driverData, index) => {
-                let driver = new Driver(driverData)
-
-                worksheet.getRow(rowNumber + shifts[index])
-                    .getCell(columnNumber + 1)
-                    .value = driver.shortName
-                worksheet.getRow(rowNumber + shifts[index])
-                    .getCell(columnNumber + 2)
-                    .value = driver.tabnumber
+            page.forEach((bus) => {
+                drawRightBus(worksheet, bus, rowNumber, columnNumber)
+                rowNumber += 8
             })
+
+            function drawRightBus(worksheet, bus, row, column) {
+                let rowNumber = row
+                let columnNumber = column
+    
+                if(!bus.busnumber) {
+                    return
+                }
+
+                let shifts = []
+                switch(bus.drivers.length) {
+                    case 1:
+                        shifts = [4]
+                        break
+                    case 2:
+                        shifts = [2, 6]
+                        break
+                    case 3:
+                        shifts = [1, 4, 7]
+                        break
+                    case 4:
+                        shifts = [1, 3, 5, 7]
+                        break
+                }
+
+                bus.drivers.forEach((driverData, index) => {
+                    let driver = new Driver(driverData)
+                    
+                    let number_of_days = moment(`${year}-${month}`, "YYYY-MM").daysInMonth()
+                    let statuses = driver.statusesByDate({date: `${year}-${month}-13`, count: number_of_days - 12, isShort: true})
+    
+                    for(let i=0; i<number_of_days - 12; i++) {
+                        worksheet.getRow(rowNumber + shifts[index])
+                            .getCell(columnNumber + i)
+                            .value = statuses[i]
+                    }
+                })
+            }
         }
+        
     }
 }
 
