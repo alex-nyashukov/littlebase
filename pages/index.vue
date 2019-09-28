@@ -26,9 +26,9 @@
             </template>
             <v-date-picker v-model="date" no-title @change="menu = false"></v-date-picker>
           </v-menu>
-          <v-btn @click="prevDay" color="white" elevation="1" fab small><v-icon>fa-chevron-left</v-icon></v-btn>
-          <v-btn @click="update" class="ml-3" color="white" elevation="1" fab small><v-icon>fa-redo-alt</v-icon></v-btn>
-          <v-btn @click="nextDay" class="ml-3" color="white" elevation="1" fab small><v-icon>fa-chevron-right</v-icon></v-btn>
+          <v-btn @click="prevDay" color="white" elevation="1" fab small><v-icon color="grey darken-1">fa-chevron-left</v-icon></v-btn>
+          <v-btn @click="update" class="ml-3" color="white" elevation="1" fab small><v-icon color="grey darken-1">fa-redo-alt</v-icon></v-btn>
+          <v-btn @click="nextDay" class="ml-3" color="white" elevation="1" fab small><v-icon color="grey darken-1">fa-chevron-right</v-icon></v-btn>
         </v-layout>
       </v-flex>
     </v-card-title>
