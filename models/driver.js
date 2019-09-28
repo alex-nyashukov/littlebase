@@ -33,6 +33,15 @@ export default class Driver {
     return form
   }
 
+  get shortName() {
+    let new_name = this.name.replace('  ', ' ')
+    new_name = new_name.trim()
+    let words = new_name.split(' ')
+    return words[0] + ' ' + words.slice(1).map((value) => {
+      return value[0] + '.'
+    }).join('')
+  }
+
   statusesByDate({date, count, isShort=false, withExceptions=false, withDate=false}) {
     var statuses = []
     this.graphic.items.forEach((value) => {

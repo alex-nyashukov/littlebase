@@ -46,12 +46,12 @@ export default {
       downloads: [
         { title: 'А3', month: 'Январь', renderer: A3Excel, code: 'a3', getData: async () => {
           await Promise.all([
-            this.$store.dispatch('drivers/readAll'),
+            this.$store.dispatch('buses/readAll'),
             this.$store.dispatch('templates/download', { filename: 'a3.xlsx' })
           ])
-          let drivers = this.$store.getters['drivers/list']
+          let buses = this.$store.getters['buses/list']
           let template = this.$store.getters['templates/template']('a3.xlsx')
-          return { drivers, template }
+          return { buses, template }
         }},
         { title: 'А4', month: 'Январь', renderer: A4Excel, code: 'a4', getData: async () => {
           await Promise.all([
@@ -91,6 +91,7 @@ export default {
   methods: {
     async get_file(download) {
       const data = await download.getData()
+      data.month = download.month
       const buf = await download.renderer.render(data)
       FileSaver(new Blob([buf]), download.code+".xlsx");
     }
