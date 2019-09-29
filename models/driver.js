@@ -14,6 +14,7 @@ export default class Driver {
   }
   ways = []
   phone = ''
+  image = ''
 
   shortStatuses = {
     'Рабочий': 'Р',

@@ -56,7 +56,6 @@ export default {
     item: {
       handler: function(val){
         this.statuses = this.calculate_statuses()
-        console.log(this.statuses)
       },
       deep: true
     }
@@ -85,7 +84,6 @@ export default {
     },
     onChangeCalendar() {
       this.statuses = this.calculate_statuses()
-        console.log(this.statuses)
     },
     calculate_statuses() {
       let start_of_month = moment(this.date).startOf('month')

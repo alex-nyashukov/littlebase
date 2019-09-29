@@ -12,7 +12,8 @@ var driverSchema = mongoose.Schema({
     },
     bus: { type: mongoose.Schema.Types.ObjectId, ref: 'bus', childPath:"drivers" },
     ways: Array,
-    phone: String
+    phone: String,
+    image: String
 })
 driverSchema.plugin(relationship, { relationshipPathName:'bus' })
 
