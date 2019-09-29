@@ -33,6 +33,41 @@
       </v-flex>
     </v-card-title>
     <v-card-text class="mt-3">
+      <v-row>
+        <v-col>
+          <h1>Автобусы</h1>
+          <h2 class="pt-2">Резерв ({{ report.busReserve.length }})</h2>
+          <v-chip v-for="bus in report.busReserve" :key="bus._id">{{ bus.busnumber }}</v-chip>
+          <template v-for="(status, name) in report.outBuses">
+            <h2 class="pt-2" :key="name">{{ name }} ({{ status.length }})</h2>
+            <v-chip v-for="bus in status" :key="bus._id">{{ bus.busnumber }}</v-chip>
+          </template>
+        </v-col>
+        <v-col>
+          <h1>Водители</h1>
+          <h2 class="pt-2">Резерв ({{ report.driverReserveCount }})</h2>
+          <v-simple-table>
+            <thead>
+              <tr>
+                <th>Первая см.</th>
+                <th>Вторая см.</th>
+                <th>Полный день</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(row, i) in report.driverReserveTable" :key="i">
+                <td><v-chip v-for="driver in row['Первая см.']" :key="driver._id">{{ driver.tabnumber }}</v-chip></td>
+                <td><v-chip v-for="driver in row['Вторая см.']" :key="driver._id">{{ driver.tabnumber }}</v-chip></td>
+                <td><v-chip v-for="driver in row['Рабочий']" :key="driver._id">{{ driver.tabnumber }}</v-chip></td>
+              </tr>
+            </tbody>
+          </v-simple-table>
+          <template v-for="(status, name) in report.outDrivers">
+            <h2 class="pt-2" :key="name">{{ name }} ({{ status.length }})</h2>
+            <v-chip v-for="driver in status" :key="driver._id">{{ driver.tabnumber }}</v-chip>
+          </template>
+        </v-col>
+      </v-row>
       <h1>Рабочие</h1>
       <v-simple-table>
         <thead>
@@ -52,41 +87,6 @@
           </tr>
         </tbody>
       </v-simple-table>
-      <v-row>
-        <v-col>
-          <h1>Автобусы</h1>
-          <h2 class="pt-2">Резерв</h2>
-          <v-chip v-for="bus in report.busReserve" :key="bus._id">{{ bus.busnumber }}</v-chip>
-          <template v-for="(status, name) in report.outBuses">
-            <h2 class="pt-2" :key="name">{{ name }}</h2>
-            <v-chip v-for="bus in status" :key="bus._id">{{ bus.busnumber }}</v-chip>
-          </template>
-        </v-col>
-        <v-col>
-          <h1>Водители</h1>
-          <h2 class="pt-2">Резерв</h2>
-          <v-simple-table>
-            <thead>
-              <tr>
-                <th>Первая см.</th>
-                <th>Вторая см.</th>
-                <th>Полный день</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(row, i) in report.driverReserveTable" :key="i">
-                <td><v-chip v-for="driver in row['Первая см.']" :key="driver._id">{{ driver.tabnumber }}</v-chip></td>
-                <td><v-chip v-for="driver in row['Вторая см.']" :key="driver._id">{{ driver.tabnumber }}</v-chip></td>
-                <td><v-chip v-for="driver in row['Рабочий']" :key="driver._id">{{ driver.tabnumber }}</v-chip></td>
-              </tr>
-            </tbody>
-          </v-simple-table>
-          <template v-for="(status, name) in report.outDrivers">
-            <h2 class="pt-2" :key="name">{{ name }}</h2>
-            <v-chip v-for="driver in status" :key="driver._id">{{ driver.tabnumber }}</v-chip>
-          </template>
-        </v-col>
-      </v-row>
     </v-card-text>
   </v-card>
 </template>

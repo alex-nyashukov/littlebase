@@ -4,6 +4,7 @@ export default class Report {
     constructor(date, buses) {
         this.errors = []
         this.workTable = []
+        this.driverReserveCount = 0
         this.driverReserveTable = []
         this.busReserve = []
         this.outDrivers = {
@@ -35,6 +36,7 @@ export default class Report {
             if(['Ремонт', 'СВАРЗ'].includes(bus.status)) {
                 this.outBuses[bus.status].push(bus)
                 if(workedDriversCount !== 0) {
+                    this.driverReserveCount += workedDriversCount
                     this.driverReserveTable.push(row)
                 }
             } else {
