@@ -29,7 +29,27 @@ export default {
   props: ['item'],
   computed: {
     ways() {
-      return this.$store.getters['ways/list'].map((value) => ({ text: `${value.route.title}/${value.title} ${ value.isWeekend ? 'В' : '' }`, value: value._id }))
+      let ways = Array.from(this.$store.getters['ways/list'])
+      return ways
+        .sort(function (a, b) {
+          if (a.title > b.title) {
+            return 1;
+          }
+          if (a.title < b.title) {
+            return -1;
+          }
+          return 0;
+        })
+        .sort(function (a, b) {
+          if (a.route.title > b.route.title) {
+            return 1;
+          }
+          if (a.route.title < b.route.title) {
+            return -1;
+          }
+          return 0;
+        })
+        .map((value) => ({ text: `${value.route.title}/${value.title} ${ value.isWeekend ? 'В' : '' }`, value: value._id }))
     }
   },
   mounted() {
