@@ -38,6 +38,7 @@ export default {
   data: () => ({
     menu: [
       { title: 'Главная', link: '/' },
+      { title: 'Наряд', link: '/outfit' },
       { title: 'Водители', link: '/drivers' },
       { title: 'Автобусы', link: '/buses' },
       { title: 'Маршруты', link: '/routes' },

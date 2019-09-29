@@ -59,35 +59,107 @@ export class AgreementExcel {
 }
 
 export class A4Excel {
-    static async render({ drivers, template }) {
+    static async render({ buses, template, month }) {
+
+        let year = '2019'
+
+        let sortedBuses = Array.from(buses)
+        sortedBuses = sortedBuses.sort((a, b) => {
+            return a.busnumber - b.busnumber
+        })
+
+        let listCount = Math.ceil(sortedBuses.length/5)
+        let pages = []
+
+        for(let i=0; i<listCount; i++) {
+            pages.push([])
+            for(let j=0; j<5; j++) {
+                pages[i].push(sortedBuses[i*5+j] || {})
+            }
+        }
+
         const workbook = new Excel.Workbook();
         await workbook.xlsx.load(template)
 
-        var worksheet = workbook.getWorksheet('main')
-        var row
-        var rowNumber = 10
-        var columnNumber
-        drivers.forEach(driver => {
-            row = worksheet.getRow(rowNumber)
+        var worksheet = workbook.getWorksheet('Page 1')
 
-            columnNumber = 3
-            row.getCell(columnNumber)
-                .value = driver.name
-            columnNumber = 6
-            row.getCell(columnNumber)
-                .value = driver.tabnumber
+        for(let i=1; i<pages.length; i++) {
+            let copySheet = workbook.addWorksheet("Sheet")
+            copySheet.model = Object.assign(worksheet.model, {
+                mergeCells: worksheet.model.merges
+              });
+            copySheet.name = "Page " + (1 + i)
+        }
 
-            columnNumber = 10
-            new Driver(driver).statusesByDate('2019-09-01', 30, true)
-                .forEach((status) => {
-                    row.getCell(columnNumber)
-                        .value = status
-                    columnNumber++
-                })
-            rowNumber++
-        })
+        for(let i=0; i<pages.length; i++) {
+            worksheet = workbook.getWorksheet('Page ' + (i + 1))
+            let rowNumber = 10
+            let columnNumber = 2
+            
+            pages[i].forEach((bus, index) => {
+                if(!bus.busnumber) {
+                    return
+                }
 
-        return await workbook.xlsx.writeBuffer();
+                drawBus(worksheet, bus, rowNumber + index * 8, columnNumber)
+            })
+        }
+
+        return await workbook.xlsx.writeBuffer()
+
+        function drawBus(worksheet, bus, row, column) {
+            let rowNumber = row
+            let columnNumber = column
+
+            worksheet.getRow(rowNumber)
+                .getCell(columnNumber)
+                .value = bus.busnumber
+
+            let shifts = []
+            switch(bus.drivers.length) {
+                case 1:
+                    shifts = [4]
+                    break
+                case 2:
+                    shifts = [2, 6]
+                    break
+                case 3:
+                    shifts = [1, 4, 7]
+                    break
+                case 4:
+                    shifts = [1, 3, 5, 7]
+                    break
+            }
+
+            bus.drivers.forEach((driverData, index) => {
+                if(!driverData.tabnumber) {
+                    return
+                }
+                let driver = new Driver(driverData)
+                drawDriver(worksheet, driver, rowNumber + shifts[index], columnNumber)
+            })
+
+            function drawDriver(worksheet, driver, row, column) {
+                let rowNumber = row
+                let columnNumber = column
+    
+                worksheet.getRow(rowNumber)
+                    .getCell(columnNumber + 3)
+                    .value = driver.shortName
+                worksheet.getRow(rowNumber)
+                    .getCell(columnNumber + 4)
+                    .value = driver.tabnumber
+                
+                let number_of_days = moment(`${year}-${month}`, "YYYY-MM").daysInMonth()
+                let statuses = driver.statusesByDate({date: `${year}-${month}-01`, count: number_of_days, isShort: true})
+    
+                for(let i=0; i<number_of_days; i++) {
+                    worksheet.getRow(rowNumber)
+                    .getCell(columnNumber + 8 + i)
+                    .value = statuses[i]
+                }
+            }
+        }
     }
 }
 
@@ -251,6 +323,43 @@ export class A3Excel {
                             .value = statuses[i]
                     }
                 })
+
+                if(!bus.way) {
+                    return
+                }
+                
+                worksheet.getRow(rowNumber)
+                            .getCell(columnNumber + 19)
+                            .value = `Выход: ${bus.way.title}`
+
+                worksheet.getRow(rowNumber + 2)
+                            .getCell(columnNumber + 19)
+                            .value = `1 смена: ${bus.way.times.durationFirstSmene || ''}`
+                            
+                worksheet.getRow(rowNumber + 2)
+                            .getCell(columnNumber + 22)
+                            .value = `2 смена: ${bus.way.times.durationSecondSmene || ''}`
+                            
+                worksheet.getRow(rowNumber + 3)
+                            .getCell(columnNumber + 19)
+                            .value = `Выезд из парка: ${bus.way.times.outPark || ''}`
+                            
+                worksheet.getRow(rowNumber + 4)
+                            .getCell(columnNumber + 19)
+                            .value = `Время смены: ${bus.way.times.change || ''}`
+                            
+                worksheet.getRow(rowNumber + 5)
+                            .getCell(columnNumber + 19)
+                            .value = `Окончание работы: ${bus.way.times.endWork || ''}`
+                            
+                worksheet.getRow(rowNumber + 7)
+                            .getCell(columnNumber + 19)
+                            .value = `1 смена: ${bus.way.times.lunchFirstSmene || ''}`
+                            
+                worksheet.getRow(rowNumber + 7)
+                            .getCell(columnNumber + 22)
+                            .value = `2 смена: ${bus.way.times.lunchSecondSmene || ''}`
+                            
             }
         }
         

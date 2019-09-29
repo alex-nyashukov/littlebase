@@ -27,7 +27,8 @@
           dark
           @click="get_file(download)"
         >
-          Скачать
+          <v-progress-circular v-if="download.isLoading" indeterminate></v-progress-circular>
+          <span v-else>Скачать</span>
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -44,7 +45,7 @@ export default {
   data() {
     return {
       downloads: [
-        { title: 'А3', month: '01', renderer: A3Excel, code: 'a3', getData: async () => {
+        { isLoading: false, title: 'А3', month: '01', renderer: A3Excel, code: 'a3', getData: async () => {
           await Promise.all([
             this.$store.dispatch('buses/readAll'),
             this.$store.dispatch('templates/download', { filename: 'a3.xlsx' })
@@ -53,7 +54,7 @@ export default {
           let template = this.$store.getters['templates/template']('a3.xlsx')
           return { buses, template }
         }},
-        { title: 'А4', month: '01', renderer: A4Excel, code: 'a4', getData: async () => {
+        { isLoading: false,  title: 'А4', month: '01', renderer: A4Excel, code: 'a4', getData: async () => {
           await Promise.all([
             this.$store.dispatch('buses/readAll'),
             this.$store.dispatch('templates/download', { filename: 'a4.xlsx' })
@@ -62,7 +63,7 @@ export default {
           let template = this.$store.getters['templates/template']('a4.xlsx')
           return { buses, template }
         } },
-        { title: 'Согласие', month: '01', renderer: AgreementExcel, code: 'agreement', getData: async () => {
+        { isLoading: false,  title: 'Согласие', month: '01', renderer: AgreementExcel, code: 'agreement', getData: async () => {
           await Promise.all([
             this.$store.dispatch('drivers/readAll'),
             this.$store.dispatch('templates/download', { filename: 'agreement.xlsx' })
@@ -90,10 +91,12 @@ export default {
   },
   methods: {
     async get_file(download) {
+      download.isLoading = true
       const data = await download.getData()
       data.month = download.month
       const buf = await download.renderer.render(data)
       FileSaver(new Blob([buf]), download.code+".xlsx");
+      download.isLoading = false
     }
   }
 }

@@ -36,10 +36,14 @@ export default {
       menu: false
     }
   },
+  watch: {
+    localTime(val) {
+      this.$emit('change:time', val)
+    }
+  },
   methods: {
     changeTime() {
       this.$refs.menu.save(this.localTime)
-      this.$emit('change:time', this.localTime)
     }
   }
 }
