@@ -52,7 +52,7 @@ module.exports = {
       middleware: ['auth']
   },
   axios: {
-    // baseURL: dev ? '' : 'http://194.67.90.97'
+    baseURL: dev ? '' : 'http://194.67.90.97'
   },
   vuetify: {
     icons: {
