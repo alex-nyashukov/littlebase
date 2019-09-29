@@ -28,8 +28,8 @@
       loading-text="Loading..."
       @click:row="onRowClick"
     >
-      <template v-slot:item.ways="{ value }">
-        <v-chip v-for="way in value" :key="way._id">{{ way.title }}</v-chip>
+      <template v-slot:item.title="{ item }">
+        {{ item.title }} {{ item.isWeekend ? 'В' : '' }}{{ item.isWeekday ? 'Б' : ''}}
       </template>
     </v-data-table>
     <app-modal
