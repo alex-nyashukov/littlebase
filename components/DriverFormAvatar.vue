@@ -49,12 +49,13 @@ export default {
       let { data } = await this.$axios.post("/api/drivers/set_image/" + this.item._id, formData, {
         headers: { enctype: "multipart/form-data" }
       });
-      this.item.image = data
+      let filename = data
       let reader = new FileReader();
       reader.onload = e => {
         this.formData.uploadFileData = e.target.result;
       };
       reader.readAsDataURL(file);
+      this.item.image = filename
       this.isLoading = false;
     },
     async removeImage() {
