@@ -37,7 +37,7 @@ export default {
       return this.$store.getters['buses/list'].map((value) => ({ text: value.busnumber, value: value._id }))
     },
     ways() {
-      return this.$store.getters['ways/list'].map((value) => ({ text: `${value.route.title}/${value.title}`, value: value._id }))
+      return this.$store.getters['ways/list'].map((value) => ({ text: `${value.route.title}/${value.title} ${ value.isWeekend ? 'В' : '' }`, value: value._id }))
     }
   },
   mounted() {

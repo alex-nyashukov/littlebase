@@ -29,7 +29,7 @@
       @click:row="onRowClick"
     >
       <template v-slot:item.title="{ item }">
-        {{ item.title }} {{ item.isWeekend ? 'В' : '' }}{{ item.isWeekday ? 'Б' : ''}}
+        {{ item.title }} {{ item.isWeekend ? 'В' : '' }}
       </template>
     </v-data-table>
     <app-modal
