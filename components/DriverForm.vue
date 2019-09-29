@@ -9,7 +9,7 @@
       </v-flex>
 
       <v-flex xs12 md5>
-        <v-text-field v-model="item.phone" label="Номер телефона"></v-text-field>
+        <v-text-field v-mask="mask" v-model="item.phone" label="Номер телефона"></v-text-field>
         <v-select
           v-model="item.ways"
           :items="ways"
@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import { mask } from 'vue-the-mask'
 import DriverFormCalendar from "@/components/DriverFormCalendar.vue"
 import DriverFormGraphic from "@/components/DriverFormGraphic.vue"
 
@@ -31,7 +32,15 @@ export default {
     DriverFormCalendar,
     DriverFormGraphic
   },
+  directives: {
+    mask
+  },
   props: ['item'],
+  data() {
+    return {
+      mask : '+7 (###) ###-##-##'
+    }
+  },
   computed: {
     buses() {
       let buses = Array.from(this.$store.getters['buses/list'])
