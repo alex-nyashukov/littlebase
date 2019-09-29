@@ -1,7 +1,7 @@
 const multer = require('multer')
 const storageConfig = multer.diskStorage({
   destination: (req, file, cb) =>{
-    cb(null, "static\\img");
+    cb(null, "static/img");
   },
   filename: (req, file, cb) =>{
     let splitedFilename = file.originalname.split('.')
