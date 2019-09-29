@@ -37,10 +37,10 @@
         <v-col>
           <h1>Автобусы</h1>
           <h2 class="pt-2">Резерв ({{ report.busReserve.length }})</h2>
-          <v-chip v-for="bus in report.busReserve" :key="bus._id">{{ bus.busnumber }}</v-chip>
+          <v-chip v-for="bus in report.busReserve.sort((a, b) => (a.busnumber - b.busnumber))" :key="bus._id">{{ bus.busnumber }}</v-chip>
           <template v-for="(status, name) in report.outBuses">
             <h2 class="pt-2" :key="name">{{ name }} ({{ status.length }})</h2>
-            <v-chip v-for="bus in status" :key="bus._id">{{ bus.busnumber }}</v-chip>
+            <v-chip v-for="bus in status.sort((a, b) => (a.busnumber - b.busnumber))" :key="bus._id">{{ bus.busnumber }}</v-chip>
           </template>
         </v-col>
         <v-col>
@@ -64,7 +64,7 @@
           </v-simple-table>
           <template v-for="(status, name) in report.outDrivers">
             <h2 class="pt-2" :key="name">{{ name }} ({{ status.length }})</h2>
-            <v-chip v-for="driver in status" :key="driver._id">{{ driver.tabnumber }}</v-chip>
+            <v-chip v-for="driver in status.sort((a, b) => (a.tabnumber - b.tabnumber))" :key="driver._id">{{ driver.tabnumber }}</v-chip>
           </template>
         </v-col>
       </v-row>

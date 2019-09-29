@@ -18,7 +18,7 @@
           :items="ways"
           label="Выход"
         ></v-select>
-        <v-select v-model="item.status" :items="['', 'Ремонт','СВАРЗ']" label="Статус"></v-select>
+        <v-select v-model="item.status" :items="['', 'Ремонт','СВАРЗ','Долгостой']" label="Статус"></v-select>
       </v-flex>
     </v-layout>
   </v-form>

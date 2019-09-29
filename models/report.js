@@ -33,8 +33,12 @@ export default class Report {
                     this.outDrivers[status].push(driver)
                 }
             })
-            if(['Ремонт', 'СВАРЗ'].includes(bus.status)) {
-                this.outBuses[bus.status].push(bus)
+            if(['Ремонт', 'СВАРЗ', 'Долгостой'].includes(bus.status)) {
+                if(bus.status == 'Долгостой') {
+                    this.outBuses['Ремонт'].push(bus)
+                } else {
+                    this.outBuses[bus.status].push(bus)
+                }
                 if(workedDriversCount !== 0) {
                     this.driverReserveCount += workedDriversCount
                     this.driverReserveTable.push(row)

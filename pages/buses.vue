@@ -54,7 +54,8 @@ export default {
           { text: 'Бортовой номер', value: 'busnumber' },
           { text: 'Марка', value: 'mark' },
           { text: 'Цвет', value: 'color' },
-          { text: 'Вместимость', value: 'capacity' }
+          { text: 'Вместимость', value: 'capacity' },
+          { text: 'Статус', value: 'status' }
         ]
       }
     }
