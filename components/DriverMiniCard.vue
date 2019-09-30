@@ -13,7 +13,8 @@
     <v-card min-width="500">
       <v-card-text>
         <v-input
-          :messages="[item.phone]"
+          error-count="5"
+          :messages="item.phones.map(phone => phone.value)"
         >
           <template v-slot:prepend>
             <v-avatar size="100" color="grey">

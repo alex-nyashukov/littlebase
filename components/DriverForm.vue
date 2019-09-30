@@ -9,10 +9,8 @@
       </v-flex>
 
       <v-flex xs12 md5>
-        <driver-form-avatar
-          :item="item"
-        ></driver-form-avatar>
-        <v-text-field v-mask="mask" v-model="item.phone" label="Номер телефона"></v-text-field>
+        <driver-form-avatar :item="item"></driver-form-avatar>
+        <driver-form-phones :phones="item.phones"></driver-form-phones>
         <v-select v-model="item.ways" :items="ways" multiple label="Выходы"></v-select>
         <driver-form-graphic :graphic="item.graphic"></driver-form-graphic>
       </v-flex>
@@ -21,26 +19,23 @@
 </template>
 
 <script>
-import { mask } from "vue-the-mask";
-import DriverFormCalendar from "@/components/DriverFormCalendar.vue";
-import DriverFormGraphic from "@/components/DriverFormGraphic.vue";
-import DriverFormAvatar from "@/components/DriverFormAvatar.vue";
+import DriverFormCalendar from "@/components/DriverFormCalendar.vue"
+import DriverFormGraphic from "@/components/DriverFormGraphic.vue"
+import DriverFormAvatar from "@/components/DriverFormAvatar.vue"
+import DriverFormPhones from "@/components/DriverFormPhones.vue"
 
 export default {
   components: {
     DriverFormCalendar,
     DriverFormGraphic,
-    DriverFormAvatar
-  },
-  directives: {
-    mask
+    DriverFormAvatar,
+    DriverFormPhones
   },
   props: ["item"],
   data() {
     return {
       path: "",
-      file: null,
-      mask: "+7 (###) ###-##-##"
+      file: null
     };
   },
   computed: {

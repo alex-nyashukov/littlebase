@@ -13,7 +13,7 @@ export default class Driver {
     exceptions: []
   }
   ways = []
-  phone = ''
+  phones = []
   image = ''
 
   shortStatuses = {

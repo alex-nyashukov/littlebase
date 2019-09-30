@@ -2,9 +2,6 @@ import Excel from "exceljs/dist/exceljs"
 import moment from 'moment'
 
 import Driver from '@/models/driver'
-import { browser } from "process/browser";
-
-
 
 export class AgreementExcel {
     static async render({ drivers, template, month }) {
