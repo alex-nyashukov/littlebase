@@ -74,7 +74,7 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch('buses/readAll').then(() => {
+    this.$store.dispatch('buses/readAll').then((res) => {
       this.table.isLoading = false
     })
   }

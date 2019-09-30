@@ -61,11 +61,26 @@ module.exports = function (Model) {
                 query = query.populate(req.query.populate)
             } else {
                 for (let i in req.query.populate) {
-                    query = query.populate(req.query.populate[i])
+                    query = multiPopulate(query, req.query.populate[i])
                 }
             }
         }
         return query
+
+        function multiPopulate(query, populate) {
+            let objPopulate = {}
+            let curObj = objPopulate
+            populates = populate.split('.')
+            for(let i=0; i<populates.length; i++) {
+                curObj.path = populates[i]
+                if(populates[i+1]) {
+                    curObj.populate = {}
+                    curObj = curObj.populate
+                }
+            }
+
+            return query.populate(objPopulate)
+        }
     }
 
     return router

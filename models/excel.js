@@ -149,7 +149,7 @@ export class A4Excel {
             
             worksheet.getRow(rowNumber)
                         .getCell(41)
-                        .value = `Выход: ${bus.way.title}`
+                        .value = `Выход: ${bus.way.route.title}/${bus.way.title}`
 
             worksheet.getRow(rowNumber + 2)
                         .getCell(41)
@@ -370,7 +370,7 @@ export class A3Excel {
                 
                 worksheet.getRow(rowNumber)
                             .getCell(columnNumber + 19)
-                            .value = `Выход: ${bus.way.title}`
+                            .value = `Выход: ${bus.way.route.title}/${bus.way.title}`
 
                 worksheet.getRow(rowNumber + 2)
                             .getCell(columnNumber + 19)
