@@ -29,6 +29,10 @@
       loading-text="Loading..."
       @click:row="onRowClick"
     >
+      <template v-slot:item.tabnumber="{ item }">
+        <driver-mini-card  :item="item" right>
+        </driver-mini-card>
+      </template>
     </v-data-table>
     <app-modal
       ref="modal"
@@ -39,11 +43,13 @@
 <script>
 import Model from '@/models/driver'
 import AppModal from '@/components/TheModal.vue'
+import DriverMiniCard from '@/components/DriverMiniCard.vue'
 
 export default {
   transition: 'fade', 
   components: {
-    AppModal
+    AppModal,
+    DriverMiniCard
   },
   data() {
     return {

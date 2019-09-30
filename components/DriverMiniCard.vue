@@ -1,0 +1,41 @@
+<template>
+  <v-tooltip
+    content-class="pa-0"
+    :left="left"
+    :right="right"
+    open-on-hover
+    offset-x
+    :disabled="$vuetify.breakpoint.xs"
+  >
+    <template v-slot:activator="{ on }">
+      <v-chip v-on="on">{{ item.tabnumber }}</v-chip>
+    </template>
+    <v-card min-width="500">
+      <v-card-text>
+        <v-input
+          :messages="[item.phone]"
+        >
+          <template v-slot:prepend>
+            <v-avatar size="100" color="grey">
+              <img
+                v-if="item.image"
+                :src="item.image" 
+              />
+            </v-avatar>
+          </template>
+          {{ item.name }}
+        </v-input>
+      </v-card-text>
+    </v-card>
+  </v-tooltip>
+</template>
+
+<script>
+export default {
+  props: ['item', 'left', 'right']
+}
+</script>
+
+<style>
+
+</style>
