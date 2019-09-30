@@ -25,7 +25,7 @@ export default {
   props: ['route', 'system'],
   computed: {
     isShow() {
-      return this.route.ways.reduce((a ,b) => (a + +((this.way.isWeekend && this.system.isWeekend) || (this.way.isWeekday && !this.system.isWeekend))), 0)
+      return this.route.ways.reduce((a ,b) => (a + +((b.isWeekend && this.system.isWeekend) || (b.isWeekday && !this.system.isWeekend))), 0)
     }
   }
 }
