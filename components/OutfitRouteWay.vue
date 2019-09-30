@@ -1,5 +1,5 @@
 <template>
-  <v-layout align-center>
+  <v-layout v-if="isShow" align-center>
     <v-spacer></v-spacer>
     <v-flex xs2>Выход {{ way.title }}</v-flex>
     <way-button :items="system.buses" :size="1"></way-button>
@@ -15,7 +15,12 @@ export default {
   components: {
     WayButton
   },
-  props: ['way', 'system']
+  props: ['way', 'system'],
+  computed: {
+    isShow() {
+      return (this.way.isWeekend && this.system.isWeekend) || (this.way.isWeekday && !this.system.isWeekend)
+    }
+  }
 };
 </script>
 

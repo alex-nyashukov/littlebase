@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mb-3">
+  <v-card v-if="isShow" class="mb-3">
     <v-card-title>
       <v-layout row class="pl-3">
         <v-flex xs3><h3>Маршрут {{ route.title }}</h3></v-flex>
@@ -22,7 +22,12 @@ export default {
   components: {
     OutfitRouteWay
   },
-  props: ['route', 'system']
+  props: ['route', 'system'],
+  computed: {
+    isShow() {
+      return this.route.ways.reduce((a ,b) => (a + +(b.isWeekend == this.system.isWeekend || b.isWeekday == !this.system.isWeekend)), 0)
+    }
+  }
 }
 </script>
 
