@@ -47,7 +47,7 @@ export default {
       }));
       
       let colors = {'green': 0, 'yellow': 1, 'red': 2}
-      drivers = drivers.sort((a, b) => (colors[b.borderColor] - colors[a.borderColor])).sort((a, b) => (b.count - a.count))
+      drivers = drivers.sort((a, b) => (b.count - a.count)).sort((a, b) => (colors[a.borderColor] - colors[b.borderColor]))
       drivers = drivers.filter(value => {
         let isInclude = true;
         this.$store.getters["outfit/items"].forEach(item => {

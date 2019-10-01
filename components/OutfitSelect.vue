@@ -1,5 +1,5 @@
 <template>
-  <v-select
+  <v-overflow-btn
     editable
     style="align-items: center"
     full-width
@@ -7,7 +7,7 @@
     hide-details
     :items="items"
     :value="value"
-    @change="(data) => {$emit('input', data)}"
+    @input="(data) => {$emit('input', data)}"
   >
     <template v-slot:selection="{ item }">
       <slot v-bind:item="item"></slot>
@@ -20,7 +20,7 @@
         <v-slot name="tooltip" v-bind:item="item"></v-slot>
       </v-tooltip>
     </template>
-  </v-select>
+  </v-overflow-btn>
 </template>
 
 <script>
@@ -30,7 +30,7 @@ export default {
 </script>
 
 <style>
-  .v-select__selections input {
+  /* .v-select__selections input {
     display: none !important;
-  }
+  } */
 </style>

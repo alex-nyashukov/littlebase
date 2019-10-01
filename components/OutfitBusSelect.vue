@@ -46,7 +46,7 @@ export default {
         ...bus
       }))
       let colors = {'green': 0, 'yellow': 1, 'red': 2}
-      buses = buses.sort((a, b) => (colors[b.borderColor] - colors[a.borderColor])).sort((a, b) => (b.count - a.count))
+      buses = buses.sort((a, b) => (b.count - a.count)).sort((a, b) => (colors[a.borderColor] - colors[b.borderColor]))
       buses = buses.filter(value => {
         let isInclude = true;
         this.$store.getters["outfit/items"].forEach(item => {
