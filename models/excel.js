@@ -62,191 +62,239 @@ export class ReportExcel {
         var worksheet = workbook.addWorksheet('Main')
         var report = new Report(date, buses)
 
-        let endBusesRow = 0
-        let endDriversRow = 0
+        for(let i=0; i<11; i++)
+            worksheet.getColumn(i+1).width = 11
 
-        worksheet
-            .getRow(1)
-            .getCell(1)
-            .value = 'Автобусы'
-        worksheet
-            .getRow(2)
-            .getCell(1)
-            .value = `Резерв (${report.busReserve.length})`
-        
-        let startRowNumber = 3
-        let rowNumber = 0
+        let startRowNumber = 1
         let startColumnNumber = 1
-        report.busReserve
-            .sort((a, b) => (a.busnumber - b.busnumber))
-            .forEach((bus, index) => {
-                rowNumber = startRowNumber + Math.floor(index/5)
-                worksheet
-                    .getRow(rowNumber)
-                    .getCell(startColumnNumber + index%5)
-                    .value = bus.busnumber
-            })
 
+        var rowNumber = drawWorkTable(worksheet, report, 1, 1)
         rowNumber += 2
+        drawMoreInfo(worksheet, report, rowNumber, startColumnNumber)
 
-        for(let status in report.outBuses) {
+        return await workbook.xlsx.writeBuffer()
+
+        function drawMoreInfo(worksheet, report, row, column) {
+
+            let startRowNumber = row
+            let rowNumber = 0
+            let startColumnNumber = column
+
+            let endBusesRow = 0
+            let endDriversRow = 0
+
             worksheet
-                .getRow(rowNumber)
+                .getRow(startRowNumber)
                 .getCell(startColumnNumber)
-                .value = `${status} (${report.outBuses[status].length})`
-            rowNumber++
-            startRowNumber = rowNumber
-            report.outBuses[status]
+                .value = 'Автобусы'
+            worksheet
+                .getRow(startRowNumber + 1)
+                .getCell(startColumnNumber)
+                .value = `Резерв (${report.busReserve.length})`
+
+            startRowNumber = startRowNumber + 2
+            rowNumber = startRowNumber
+
+            report.busReserve
                 .sort((a, b) => (a.busnumber - b.busnumber))
                 .forEach((bus, index) => {
-                    rowNumber = startRowNumber + Math.floor(index/5)
-
+                    rowNumber = startRowNumber + Math.floor(index / 5)
                     worksheet
                         .getRow(rowNumber)
-                        .getCell(startColumnNumber + index%5)
+                        .getCell(startColumnNumber + index % 5)
                         .value = bus.busnumber
                 })
+
             rowNumber += 2
-        }
-        endBusesRow = rowNumber
 
-        worksheet
-            .getRow(1)
-            .getCell(6)
-            .value = 'Водители'
-
-        worksheet
-            .getRow(2)
-            .getCell(6)
-            .value = `Резерв (${report.driverReserveCount})`
-        
-        startRowNumber = 3
-        rowNumber = 3
-        startColumnNumber = 6
-
-        worksheet
-            .getRow(startRowNumber)
-            .getCell(startColumnNumber)
-            .value = 'Первая см.'
-        worksheet
-            .getRow(startRowNumber)
-            .getCell(startColumnNumber + 2)
-            .value = 'Вторая см.'
-        worksheet
-            .getRow(startRowNumber)
-            .getCell(startColumnNumber + 4)
-            .value = 'Полный день'
-
-        rowNumber++
-        startRowNumber = rowNumber
-        
-        report.driverReserveTable.forEach((row, index) => {
-            rowNumber = startRowNumber + index
-            worksheet
-                .getRow(rowNumber)
-                .getCell(startColumnNumber)
-                .value = row['Первая см.'].map(driver => driver.tabnumber).join(', ')
-            worksheet
-                .getRow(rowNumber)
-                .getCell(startColumnNumber + 2)
-                .value = row['Вторая см.'].map(driver => driver.tabnumber).join(', ')
-            worksheet
-                .getRow(rowNumber)
-                .getCell(startColumnNumber + 4)
-                .value = row['Рабочий'].map(driver => driver.tabnumber).join(', ')
-            for(let i=0; i<6; i++) {
+            for (let status in report.outBuses) {
                 worksheet
                     .getRow(rowNumber)
-                    .getCell(startColumnNumber + i)
-                    .border = { top: { style: 'thin' }}
+                    .getCell(startColumnNumber)
+                    .value = `${status} (${report.outBuses[status].length})`
+                rowNumber++
+                startRowNumber = rowNumber
+                report.outBuses[status]
+                    .sort((a, b) => (a.busnumber - b.busnumber))
+                    .forEach((bus, index) => {
+                        rowNumber = startRowNumber + Math.floor(index / 5)
+
+                        worksheet
+                            .getRow(rowNumber)
+                            .getCell(startColumnNumber + index % 5)
+                            .value = bus.busnumber
+                    })
+                rowNumber += 2
             }
-        })
+            endBusesRow = rowNumber
 
-        rowNumber += 2
-        startRowNumber = rowNumber
+            startRowNumber = row
+            startColumnNumber += 5
 
-        for(let status in report.outDrivers) {
             worksheet
-                .getRow(rowNumber)
+                .getRow(startRowNumber)
                 .getCell(startColumnNumber)
-                .value = `${status} (${report.outDrivers[status].length})`
+                .value = 'Водители'
+
+            worksheet
+                .getRow(startRowNumber + 1)
+                .getCell(startColumnNumber)
+                .value = `Резерв (${report.driverReserveCount})`
+
+            startRowNumber = startRowNumber + 2
+            rowNumber = startRowNumber
+
+            worksheet
+                .getRow(startRowNumber)
+                .getCell(startColumnNumber)
+                .value = 'Первая см.'
+            worksheet
+                .getRow(startRowNumber)
+                .getCell(startColumnNumber + 2)
+                .value = 'Вторая см.'
+            worksheet
+                .getRow(startRowNumber)
+                .getCell(startColumnNumber + 4)
+                .value = 'Полный день'
+
             rowNumber++
             startRowNumber = rowNumber
-            report.outDrivers[status]
-                .sort((a, b) => (a.tabnumber - b.tabnumber))
-                .forEach((driver, index) => {
-                    rowNumber = startRowNumber + Math.floor(index/6)
 
-                    worksheet
-                        .getRow(rowNumber)
-                        .getCell(startColumnNumber + index%6)
-                        .value = driver.tabnumber
-                })
-            rowNumber += 2
-        }
-        endDriversRow = rowNumber
-
-        rowNumber = endDriversRow
-        startColumnNumber = 1
-
-        worksheet
-            .getRow(rowNumber)
-            .getCell(startColumnNumber)
-            .value = 'Рабочие'
-        
-        rowNumber++
-
-        worksheet
-            .getRow(rowNumber)
-            .getCell(startColumnNumber)
-            .value = 'Автобус'
-        worksheet
-            .getRow(rowNumber)
-            .getCell(startColumnNumber + 2)
-            .value = 'Первая см.'
-        worksheet
-            .getRow(rowNumber)
-            .getCell(startColumnNumber + 5)
-            .value = 'Вторая см.'
-        worksheet
-            .getRow(rowNumber)
-            .getCell(startColumnNumber + 8)
-            .value = 'Полный день'
-        
-        rowNumber++
-        startRowNumber = rowNumber
-        
-        report.workTable
-            .sort((a, b) => (a['Автобус'].busnumber - b['Автобус'].busnumber))
-            .forEach((row, index) => {
+            report.driverReserveTable.forEach((row, index) => {
                 rowNumber = startRowNumber + index
                 worksheet
                     .getRow(rowNumber)
                     .getCell(startColumnNumber)
-                    .value = row['Автобус'].busnumber
-                worksheet
-                    .getRow(rowNumber)
-                    .getCell(startColumnNumber + 2)
                     .value = row['Первая см.'].map(driver => driver.tabnumber).join(', ')
                 worksheet
                     .getRow(rowNumber)
-                    .getCell(startColumnNumber + 5)
+                    .getCell(startColumnNumber + 2)
                     .value = row['Вторая см.'].map(driver => driver.tabnumber).join(', ')
                 worksheet
                     .getRow(rowNumber)
-                    .getCell(startColumnNumber + 8)
+                    .getCell(startColumnNumber + 4)
                     .value = row['Рабочий'].map(driver => driver.tabnumber).join(', ')
-                for(let i=0; i<11; i++) {
+                for (let i = 0; i < 6; i++) {
                     worksheet
                         .getRow(rowNumber)
                         .getCell(startColumnNumber + i)
-                        .border = { top: { style: 'thin' }}
+                        .border = { top: { style: 'thin' } }
                 }
             })
-        
-        
 
-        return await workbook.xlsx.writeBuffer()
+            rowNumber += 2
+            startRowNumber = rowNumber
+
+            for (let status in report.outDrivers) {
+                worksheet
+                    .getRow(rowNumber)
+                    .getCell(startColumnNumber)
+                    .value = `${status} (${report.outDrivers[status].length})`
+                rowNumber++
+                startRowNumber = rowNumber
+                report.outDrivers[status]
+                    .sort((a, b) => (a.tabnumber - b.tabnumber))
+                    .forEach((driver, index) => {
+                        rowNumber = startRowNumber + Math.floor(index / 6)
+
+                        worksheet
+                            .getRow(rowNumber)
+                            .getCell(startColumnNumber + index % 6)
+                            .value = driver.tabnumber
+                    })
+                rowNumber += 2
+            }
+            endDriversRow = rowNumber
+            
+            return endDriversRow
+        }
+
+        function drawWorkTable(worksheet, report, row, column) {
+
+            let endDriversRow = row
+            let startColumnNumber = column
+
+            worksheet
+                .getRow(endDriversRow)
+                .getCell(startColumnNumber)
+                .value = 'Рабочие'
+
+            rowNumber++
+
+            let returnedRow = drawColumn(
+                worksheet,
+                report.workTable
+                    .sort((a, b) => (a['Автобус'].busnumber - b['Автобус'].busnumber))
+                    .slice(0, Math.ceil(report.workTable.length / 2)),
+                endDriversRow,
+                startColumnNumber
+            )
+            drawColumn(
+                worksheet,
+                report.workTable
+                    .sort((a, b) => (a['Автобус'].busnumber - b['Автобус'].busnumber))
+                    .slice(Math.ceil(report.workTable.length / 2)),
+                endDriversRow,
+                startColumnNumber + 6
+            )
+
+            return returnedRow
+
+            function drawColumn(worksheet, workTable, row, column) {
+                rowNumber = row
+                startColumnNumber = column
+
+                rowNumber++
+
+                worksheet
+                    .getRow(rowNumber)
+                    .getCell(startColumnNumber)
+                    .value = 'Автобус'
+                worksheet
+                    .getRow(rowNumber)
+                    .getCell(startColumnNumber + 2)
+                    .value = 'Первая'
+                worksheet
+                    .getRow(rowNumber)
+                    .getCell(startColumnNumber + 3)
+                    .value = 'Вторая'
+                worksheet
+                    .getRow(rowNumber)
+                    .getCell(startColumnNumber + 4)
+                    .value = 'Полный'
+
+                rowNumber++
+                startRowNumber = rowNumber
+
+                workTable
+                    .forEach((row, index) => {
+                        rowNumber = startRowNumber + index
+                        worksheet
+                            .getRow(rowNumber)
+                            .getCell(startColumnNumber)
+                            .value = row['Автобус'].busnumber
+                        worksheet
+                            .getRow(rowNumber)
+                            .getCell(startColumnNumber + 2)
+                            .value = row['Первая см.'].map(driver => driver.tabnumber).join(', ')
+                        worksheet
+                            .getRow(rowNumber)
+                            .getCell(startColumnNumber + 3)
+                            .value = row['Вторая см.'].map(driver => driver.tabnumber).join(', ')
+                        worksheet
+                            .getRow(rowNumber)
+                            .getCell(startColumnNumber + 4)
+                            .value = row['Рабочий'].map(driver => driver.tabnumber).join(', ')
+                        for (let i = 0; i < 5; i++) {
+                            worksheet
+                                .getRow(rowNumber)
+                                .getCell(startColumnNumber + i)
+                                .border = { top: { style: 'thin' } }
+                        }
+                    })
+                return rowNumber
+            }
+        }
     }
 }
 
