@@ -6,6 +6,7 @@ var drivers = require('./drivers')
 var buses = require('./buses')
 var routes = require('./routes')
 var ways = require('./ways')
+var outfits = require('./outfits')
 
 var api = express.Router()
 api.use(
@@ -22,6 +23,7 @@ module.exports = function(app) {
   api.use('/buses', buses)
   api.use('/routes', routes)
   api.use('/ways', ways)
+  api.use('/outfits', outfits)
   
   app.use('/api', api)
 }

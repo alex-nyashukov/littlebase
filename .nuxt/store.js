@@ -14,6 +14,7 @@ void (function updateModules() {
 
   resolveStoreModules(require('..\\store\\buses.js'), 'buses.js')
   resolveStoreModules(require('..\\store\\drivers.js'), 'drivers.js')
+  resolveStoreModules(require('..\\store\\outfit.js'), 'outfit.js')
   resolveStoreModules(require('..\\store\\routes.js'), 'routes.js')
   resolveStoreModules(require('..\\store\\templates.js'), 'templates.js')
   resolveStoreModules(require('..\\store\\ways.js'), 'ways.js')

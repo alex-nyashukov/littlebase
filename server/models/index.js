@@ -54,7 +54,17 @@ var routeSchema = mongoose.Schema({
     ways: [{ type: mongoose.Schema.Types.ObjectId, ref: 'way' }]
 })
 
+var outfitSchema = mongoose.Schema({
+    date: String,
+    wayId: String,
+    bus: String,
+    firstSmene: String,
+    secondSmene: String,
+    allDay: String
+})
+
 module.exports.Driver = mongoose.model('driver', driverSchema);
 module.exports.Bus = mongoose.model('bus', busSchema);
 module.exports.Route = mongoose.model('route', routeSchema);
 module.exports.Way = mongoose.model('way', waySchema);
+module.exports.Outfit = mongoose.model('outfit', outfitSchema);
