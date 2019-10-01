@@ -114,7 +114,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="row in report.workTable" :key="row['Автобус']._id">
+          <tr v-for="row in report.workTable.sort((a,b) => (a['Автобус'].busnumber - b['Автобус'].busnumber))" :key="row['Автобус']._id">
             <td>
               <v-chip>{{ row['Автобус'].busnumber }}</v-chip>
             </td>
