@@ -1,5 +1,4 @@
 <template>
-  <v-flex :xs3="size === 1" :xs6="size === 2">
     <outfit-select
       :items="buses"
       :value="item[field]"
@@ -16,7 +15,6 @@
         </v-layout>
       </template>
     </outfit-select>
-  </v-flex>
 </template>
 
 <script>

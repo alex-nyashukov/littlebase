@@ -1,34 +1,41 @@
 <template>
   <v-layout v-if="localWay.isActive(date)" align-center>
-    <v-spacer></v-spacer>
-    <v-flex xs2>Выход {{ way.title }}</v-flex>
-    <outfit-bus-select
-      :key="localWay._id+'1'"
-      :size="1"
-      :way="localWay"
-      field="bus"
-    ></outfit-bus-select>
-    <outfit-driver-select
-      :key="localWay._id+'2'"
-      v-if="!localWay.isTwoSmene"
-      :size="1"
-      :way="localWay"
-      field="firstSmene"
-    ></outfit-driver-select>
-    <outfit-driver-select
-      :key="localWay._id+'3'"
-      v-if="!localWay.isTwoSmene"
-      :size="1"
-      :way="localWay"
-      field="secondSmene"
-    ></outfit-driver-select>
-    <outfit-driver-select
-      :key="localWay._id+'4'"
-      v-if="localWay.isTwoSmene"
-      :size="2"
-      :way="localWay"
-      field="allDay"
-    ></outfit-driver-select>
+    <v-row class="px-3">
+      <v-col class="px-0" cols="0" md="1"></v-col>
+      <v-col class="px-0 align-center" cols="12" md="2"><h3>Выход {{ way.title }}</h3></v-col>
+      <v-subheader class="hidden-md-and-up">Автобус</v-subheader>
+      <v-col class="px-0" cols="12" md="3">
+        <outfit-bus-select
+          :key="localWay._id+'1'"
+          :way="localWay"
+          field="bus"
+        ></outfit-bus-select>
+      </v-col>
+      <v-subheader class="hidden-md-and-up" v-if="!localWay.isTwoSmene">Первая см.</v-subheader>
+      <v-col class="px-0" cols="12" md="3" v-if="!localWay.isTwoSmene">
+        <outfit-driver-select
+          :key="localWay._id+'2'"
+          :way="localWay"
+          field="firstSmene"
+        ></outfit-driver-select>
+      </v-col>
+      <v-subheader class="hidden-md-and-up" v-if="!localWay.isTwoSmene">Вторая см.</v-subheader>
+      <v-col class="px-0" cols="12" md="3" v-if="!localWay.isTwoSmene">
+        <outfit-driver-select
+          :key="localWay._id+'3'"
+          :way="localWay"
+          field="secondSmene"
+        ></outfit-driver-select>
+      </v-col>
+      <v-subheader class="hidden-md-and-up" v-if="localWay.isTwoSmene">Полный день</v-subheader>
+      <v-col class="px-0" cols="12" md="6" v-if="localWay.isTwoSmene">
+        <outfit-driver-select
+          :key="localWay._id+'4'"
+          :way="localWay"
+          field="allDay"
+        ></outfit-driver-select>
+      </v-col>
+    </v-row>
   </v-layout>
 </template>
 

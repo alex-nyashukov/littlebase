@@ -2,12 +2,12 @@
   <v-card>
     <v-card-title>
       <v-layout row class="pl-3">
-        <v-flex xs3>
+        <v-flex xs12 md3>
           <h3>Маршрут {{ route.title }}</h3>
         </v-flex>
-        <v-flex xs3>Автобус</v-flex>
-        <v-flex xs3>Первая смена</v-flex>
-        <v-flex xs3>Вторая смена</v-flex>
+        <v-flex xs3 class="hidden-sm-and-down">Автобус</v-flex>
+        <v-flex xs3 class="hidden-sm-and-down">Первая смена</v-flex>
+        <v-flex xs3 class="hidden-sm-and-down">Вторая смена</v-flex>
       </v-layout>
     </v-card-title>
     <v-card-text>
