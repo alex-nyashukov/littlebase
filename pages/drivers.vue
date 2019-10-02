@@ -57,6 +57,7 @@ export default {
         isLoading: true,
         search: '',
         headers: [
+          { text: 'Б.н. автобуса', value: 'bus.busnumber' },
           { text: 'Табельный номер', value: 'tabnumber' },
           { text: 'Ф.И.О.', value: 'name' }
         ]
