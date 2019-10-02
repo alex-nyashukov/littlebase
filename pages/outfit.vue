@@ -21,18 +21,24 @@
       </v-card-title>
       <v-card-title class="pt-2">
         <v-tabs v-model="currentRoute" centered>
-          <v-tab v-for="route in routes" :key="'tab-'+route._id" :href="'#'+route._id">
-            {{ route.title }}
-          </v-tab>
+          <template v-for="route in routes">
+            <v-tab
+              v-if="route.hasActiveWays(date)"
+              :key="'tab-'+route._id"
+              :href="'#'+route._id"
+            >{{ route.title }}</v-tab>
+          </template>
         </v-tabs>
       </v-card-title>
     </v-card>
     <template>
       <v-tabs-items v-model="currentRoute">
-          <v-tab-item v-for="route in routes" :key="route._id" :value="route._id">
-            <outfit-route :route="route" :isWeekend="isWeekend"></outfit-route>
+        <template v-for="route in routes">
+          <v-tab-item v-if="route.hasActiveWays(date)" :key="route._id" :value="route._id">
+            <outfit-route :route="route" :date="date"></outfit-route>
           </v-tab-item>
-        </v-tabs-items>
+        </template>
+      </v-tabs-items>
     </template>
   </v-layout>
 </template>

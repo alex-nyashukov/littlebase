@@ -1,5 +1,5 @@
 <template>
-  <v-card v-if="isShow">
+  <v-card>
     <v-card-title>
       <v-layout row class="pl-3">
         <v-flex xs3>
@@ -15,7 +15,7 @@
         v-for="way in route.ways" 
         :key="way._id" 
         :way="way"
-        :isWeekend="isWeekend"
+        :date="date"
       ></outfit-way>
     </v-card-text>
   </v-card>
@@ -28,15 +28,8 @@ export default {
   components: {
     OutfitWay
   },
-  props: ["route", "isWeekend"],
+  props: ["route", "date"],
   computed: {
-    isShow() {
-      return this.route.ways.reduce(
-        (a, b) =>
-          a + +((b.isWeekend && this.isWeekend) || (b.isWeekday && !this.isWeekend)),
-        0
-      );
-    }
   },
   methods: {
   }

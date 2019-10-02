@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 import form from '@/components/WayForm.vue'
 
 export default class Way {
@@ -26,5 +28,11 @@ export default class Way {
   
   get form() {
     return form
+  }
+
+  isActive(date = '') {
+    let isWeekend = [0, 6].includes(moment(date).day())
+    return  (this.isWeekend && isWeekend) ||
+            (this.isWeekday && !isWeekend)
   }
 }
