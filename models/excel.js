@@ -62,8 +62,11 @@ export class ReportExcel {
         var worksheet = workbook.addWorksheet('Main')
         var report = new Report(date, buses)
 
-        for(let i=0; i<11; i++)
-            worksheet.getColumn(i+1).width = 11
+        for(let i=0; i<11; i++) {
+            let column = worksheet.getColumn(i+1)
+            column.width = 11
+            column.style = { font: { size: 14 } }
+        }
 
         let startRowNumber = 1
         let startColumnNumber = 1
