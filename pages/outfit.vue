@@ -17,7 +17,7 @@
           </v-layout>
         </v-flex>
         <v-spacer></v-spacer>
-        <v-btn dark color="green lighten-1" @click="save">Сохранить</v-btn>
+        <v-btn dark color="green lighten-1" @click="save" :loading="isSaving">Сохранить</v-btn>
       </v-card-title>
       <v-card-title class="pt-2">
         <v-tabs v-model="currentRoute" centered>
@@ -58,6 +58,7 @@ export default {
   },
   data() {
     return {
+      isSaving: false,
       isLoading: false,
       currentRoute: null,
       date: moment().format("YYYY-MM-DD")
@@ -79,8 +80,11 @@ export default {
     }
   },
   methods: {
-    save() {
-      this.$store.dispatch("outfit/save");
+    async save() {
+      this.isSaving = true
+      await this.$store.dispatch("outfit/save")
+      await this.$store.dispatch("outfit/readByDate", { date: this.date })
+      this.isSaving = false
     },
     nextDay() {
       this.$refs.datePicker.nextDay();
