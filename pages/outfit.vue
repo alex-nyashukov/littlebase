@@ -31,15 +31,16 @@
         </v-tabs>
       </v-card-title>
     </v-card>
-    <template>
-      <v-tabs-items v-model="currentRoute">
-        <template v-for="route in routes">
-          <v-tab-item v-if="route.hasActiveWays(date)" :key="route._id" :value="route._id">
-            <outfit-route :route="route" :date="date"></outfit-route>
-          </v-tab-item>
-        </template>
-      </v-tabs-items>
-    </template>
+    <v-layout v-if="isLoading" justify-center>
+      <v-progress-circular indeterminate></v-progress-circular>
+    </v-layout>
+    <v-tabs-items v-else v-model="currentRoute">
+      <template v-for="route in routes">
+        <v-tab-item v-if="route.hasActiveWays(date)" :key="route._id" :value="route._id">
+          <outfit-route :route="route" :date="date"></outfit-route>
+        </v-tab-item>
+      </template>
+    </v-tabs-items>
   </v-layout>
 </template>
 
@@ -57,13 +58,16 @@ export default {
   },
   data() {
     return {
+      isLoading: false,
       currentRoute: null,
       date: moment().format("YYYY-MM-DD")
     };
   },
   watch: {
-    date(val) {
-      this.$store.dispatch("outfit/readByDate", { date: val });
+    async date(val) {
+      this.isLoading = true
+      await this.$store.dispatch("outfit/readByDate", { date: val })
+      this.isLoading = false
     }
   },
   computed: {
@@ -89,10 +93,14 @@ export default {
     }
   },
   async mounted() {
-    this.$store.dispatch("routes/readAll");
-    this.$store.dispatch("drivers/readAll");
-    this.$store.dispatch("buses/readAll");
-    this.$store.dispatch("outfit/readByDate", { date: this.date });
+    this.isLoading = true
+    await Promise.all([
+      this.$store.dispatch("routes/readAll"),
+      this.$store.dispatch("drivers/readAll"),
+      this.$store.dispatch("buses/readAll"),
+      this.$store.dispatch("outfit/readByDate", { date: this.date })
+    ])
+    this.isLoading = false
   }
 };
 </script>
