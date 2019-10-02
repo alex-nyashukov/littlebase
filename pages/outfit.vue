@@ -85,8 +85,10 @@ export default {
     nextDay() {
       this.$refs.datePicker.nextDay();
     },
-    update() {
-      this.$store.dispatch("buses/readAll");
+    async update() {
+      this.isLoading = true
+      await this.$store.dispatch("outfit/readByDate", { date: this.date })
+      this.isLoading = false
     },
     prevDay() {
       this.$refs.datePicker.prevDay();
