@@ -1,5 +1,5 @@
 <template>
-  <v-card v-if="isShow" class="mb-3">
+  <v-card v-if="isShow">
     <v-card-title>
       <v-layout row class="pl-3">
         <v-flex xs3>
