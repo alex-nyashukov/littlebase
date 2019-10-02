@@ -38,7 +38,7 @@ router.get('/:date', async (req, res) => {
         if(!statistic[driverId][item.wayId]) {
           statistic[driverId][item.wayId] = { count: 0, isKnow: true }
         } else {
-          statistic[busId][item.wayId].isKnow = true
+          statistic[driverId][item.wayId].isKnow = true
         }
       }
       switch(driverId) {
