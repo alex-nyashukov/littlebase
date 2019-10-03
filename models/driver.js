@@ -2,6 +2,35 @@ import moment from 'moment'
 
 import form from '@/components/DriverForm.vue'
 
+var graphic_names = {
+  'РВРВРВР': '111',
+  'ВРВРВРВ': '112',
+  'ВРРВВРР': '221',
+  'РВВРРВВ': '222',
+  'РРВВРРВ': '223',
+  'ВВРРВВР': '224',
+  'РРВВРРР': '421',
+  'РРРВВРР': '422',
+  'РРРРВВР': '423',
+  'ВРРРРВВ': '424',
+  'ВВРРРРВ': '425',
+  'РВВРРРР': '426',
+  'РРРРВВР': '521',
+  'РРРРРВВ': '522',
+  'ВРРРРРВ': '523',
+  'ВВРРРРР': '524',
+  'РВВРРРР': '525',
+  'РРВВРРР': '526',
+  'РРРВВРР': '526',
+  'РРРРРРВ': '611',
+  'ВРРРРРР': '612',
+  'РВРРРРР': '613',
+  'РРВРРРР': '614',
+  'РРРВРРР': '615',
+  'РРРРВРР': '616',
+  'РРРРРВР': '617',
+}
+
 export default class Driver {
   tabnumber = ''
   name = ''
@@ -41,6 +70,13 @@ export default class Driver {
     return words[0] + ' ' + words.slice(1).map((value) => {
       return value[0] + '.'
     }).join('')
+  }
+
+  get graphicName() {
+    let statuses = this.statusesByDate({ date: '2019-01-01', count: 7, isShort: true })
+    statuses = statuses.map(value => (value === '1' || value === '2' ? 'Р' : value))
+    let statuses_as_str = statuses.join('')
+    return graphic_names[statuses_as_str]
   }
 
   statusesByDate({date, count, isShort=false, withExceptions=false, withDate=false}) {

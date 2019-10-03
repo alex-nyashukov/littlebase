@@ -134,6 +134,9 @@ export default class A4Excel {
               worksheet.getRow(rowNumber)
                   .getCell(columnNumber + 4)
                   .value = driver.tabnumber
+              worksheet.getRow(rowNumber)
+                  .getCell(columnNumber + 5)
+                  .value = driver.graphicName
 
               let number_of_days = moment(`${year}-${month}`, "YYYY-MM").daysInMonth()
               let statuses = driver.statusesByDate({ date: `${year}-${month}-01`, count: number_of_days, isShort: true })
