@@ -1,34 +1,45 @@
 <template>
-    <outfit-select
-      :items="drivers"
-      :value="item[field]"
-      @input="(data) => $store.commit('outfit/set_field_value', { wayId: way._id, field, value: data })"
-    >
-      <template v-slot:default="{ item }">
-        <v-layout
-          justify-space-between
-          fill-height
-          :style="'border-right: 3px solid ' + (item.borderColor)"
-        >
-          <span>{{ item.text }}</span>
-          <span class="pr-2">{{ item.count }}</span>
-        </v-layout>
-      </template>
-    </outfit-select>
+  <outfit-select
+    :label="''+drivers.length"
+    :items="drivers"
+    :value="item[field]"
+    @input="(data) => $store.commit('outfit/set_field_value', { wayId: way._id, field, value: data })"
+  >
+    <template v-slot:default="{ item }">
+      <v-layout
+        justify-space-between
+        fill-height
+        :style="'border-right: 3px solid ' + (item.borderColor)"
+      >
+        <span>{{ item.text }}</span>
+        <span class="pr-2">{{ item.count }}</span>
+      </v-layout>
+    </template>
+  </outfit-select>
 </template>
 
 <script>
 import OutfitSelect from "@/components/OutfitSelect.vue";
+import Driver from "@/models/driver";
+
+var translate_statuses = {
+  Рабочий: "allDay",
+  "Первая см.": "firstSmene",
+  "Вторая см.": "secondSmene"
+};
 
 export default {
   components: {
     OutfitSelect
   },
-  props: ["size", "way", "field"],
+  props: ["size", "way", "field", "isFiltering"],
   data() {
     return {};
   },
   computed: {
+    date() {
+      return this.$store.getters["outfit/date"];
+    },
     statistic() {
       return this.$store.getters["outfit/statistic"];
     },
@@ -43,9 +54,11 @@ export default {
         borderColor: this.color(driver._id),
         ...driver
       }));
-      
-      let colors = {'green': 0, 'yellow': 1, 'red': 2}
-      drivers = drivers.sort((a, b) => (b.count - a.count)).sort((a, b) => (colors[a.borderColor] - colors[b.borderColor]))
+      drivers = drivers.map(value => new Driver(value));
+      let colors = { green: 0, yellow: 1, red: 2 };
+      drivers = drivers
+        .sort((a, b) => b.count - a.count)
+        .sort((a, b) => colors[a.borderColor] - colors[b.borderColor]);
       drivers = drivers.filter(value => {
         let isInclude = true;
         this.$store.getters["outfit/items"].forEach(item => {
@@ -59,6 +72,17 @@ export default {
             isInclude = true;
           }
         });
+        if (!this.isFiltering) {
+          return isInclude;
+        }
+        // Фильтрация
+        if (
+          translate_statuses[value.statusesByDate({ date: this.date, count: 1 })[0]] != this.field
+        ) {
+          isInclude = false;
+        }
+        
+        // ---
         return isInclude;
       });
       return drivers;

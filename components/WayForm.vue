@@ -54,6 +54,8 @@
         <v-switch v-model="item.isWeekday" label="Будни"></v-switch>
         <v-switch v-model="item.isSummer" label="Лето"></v-switch>
         <v-switch v-model="item.isWinter" label="Зима"></v-switch>
+        <v-select v-model="item.capacities" :items="['МВ','СВ','БВ','ОБВ']" multiple></v-select>
+        <v-select v-model="item.colors" :items="['Зеленый','Голубой','Синий']" multiple></v-select>
       </v-flex>
     </v-layout>
   </v-form>
@@ -67,23 +69,12 @@ export default {
     MenuTimePicker
   },
   props: ["item"],
-  watch: {
-    item: {
-      handler(value) {
-        console.log(value)
-      },
-      deep: true
-    }
-  },
   computed: {
     routes() {
       return this.$store.getters['routes/list'].map((value) => ({ text: value.title, value: value._id }))
     }
   },
   methods: {
-    func(time) {
-      console.log(time)
-    }
   },
   mounted() {
     this.$store.dispatch('routes/readAll')

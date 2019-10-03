@@ -5,6 +5,9 @@ export const state = () => ({
 })
 
 export const getters = {
+  date: (state) => {
+    return state.date
+  },
   statistic: (state) => {
     return state.statistic
   },

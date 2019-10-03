@@ -1,5 +1,6 @@
 <template>
   <v-overflow-btn
+    :label="label"
     editable
     style="align-items: center"
     full-width
@@ -25,7 +26,7 @@
 
 <script>
 export default {
-  props: ['value', 'items']
+  props: ['value', 'items', 'label']
 };
 </script>
 

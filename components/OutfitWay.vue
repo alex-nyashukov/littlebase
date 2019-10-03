@@ -9,6 +9,7 @@
           :key="localWay._id+'1'"
           :way="localWay"
           field="bus"
+          :isFiltering="isFiltering"
         ></outfit-bus-select>
       </v-col>
       <v-subheader class="hidden-md-and-up" v-if="!localWay.isTwoSmene">Первая см.</v-subheader>
@@ -17,6 +18,7 @@
           :key="localWay._id+'2'"
           :way="localWay"
           field="firstSmene"
+          :isFiltering="isFiltering"
         ></outfit-driver-select>
       </v-col>
       <v-subheader class="hidden-md-and-up" v-if="!localWay.isTwoSmene">Вторая см.</v-subheader>
@@ -25,6 +27,7 @@
           :key="localWay._id+'3'"
           :way="localWay"
           field="secondSmene"
+          :isFiltering="isFiltering"
         ></outfit-driver-select>
       </v-col>
       <v-subheader class="hidden-md-and-up" v-if="localWay.isTwoSmene">Полный день</v-subheader>
@@ -33,6 +36,7 @@
           :key="localWay._id+'4'"
           :way="localWay"
           field="allDay"
+          :isFiltering="isFiltering"
         ></outfit-driver-select>
       </v-col>
     </v-row>
@@ -49,7 +53,7 @@ export default {
     OutfitDriverSelect,
     OutfitBusSelect,
   },
-  props: ["way", "date"],
+  props: ["way", "date", "isFiltering"],
   data() {
     return {
 

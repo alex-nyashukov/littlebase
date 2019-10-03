@@ -16,6 +16,7 @@
         :key="way._id" 
         :way="way"
         :date="date"
+        :isFiltering="isFiltering"
       ></outfit-way>
     </v-card-text>
   </v-card>
@@ -28,7 +29,7 @@ export default {
   components: {
     OutfitWay
   },
-  props: ["route", "date"],
+  props: ["route", "date", "isFiltering"],
   computed: {
   },
   methods: {

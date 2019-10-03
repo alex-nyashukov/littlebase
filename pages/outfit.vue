@@ -17,6 +17,7 @@
           </v-layout>
         </v-flex>
         <v-spacer></v-spacer>
+        <v-switch v-model="isFiltering" inset label="Фильтр" class="pr-3"></v-switch>
         <v-btn dark color="green lighten-1" @click="save" :loading="isSaving">Сохранить</v-btn>
       </v-card-title>
       <v-card-title class="pt-2">
@@ -37,7 +38,7 @@
     <v-tabs-items v-else v-model="currentRoute">
       <template v-for="route in routes">
         <v-tab-item v-if="route.hasActiveWays(date)" :key="route._id" :value="route._id">
-          <outfit-route :route="route" :date="date"></outfit-route>
+          <outfit-route :route="route" :date="date" :isFiltering="isFiltering"></outfit-route>
         </v-tab-item>
       </template>
     </v-tabs-items>
@@ -58,6 +59,7 @@ export default {
   },
   data() {
     return {
+      isFiltering: false,
       isSaving: false,
       isLoading: false,
       currentRoute: null,
@@ -91,7 +93,12 @@ export default {
     },
     async update() {
       this.isLoading = true
-      await this.$store.dispatch("outfit/readByDate", { date: this.date })
+      await Promise.all([
+        this.$store.dispatch("routes/readAll"),
+        this.$store.dispatch("drivers/readAll"),
+        this.$store.dispatch("buses/readAll"),
+        this.$store.dispatch("outfit/readByDate", { date: this.date })
+      ])
       this.isLoading = false
     },
     prevDay() {

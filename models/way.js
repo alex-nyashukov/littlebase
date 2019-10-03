@@ -20,6 +20,8 @@ export default class Way {
   isSummer = false
   isWinter = false
   buses = []
+  capacities = []
+  colors = []
 
   constructor(params) {
     Object.assign(this, params)

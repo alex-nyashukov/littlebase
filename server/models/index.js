@@ -45,7 +45,9 @@ var waySchema = mongoose.Schema({
     isWeekday: Boolean,
     isSummer: Boolean,
     isWinter: Boolean,
-    buses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'bus' }]
+    buses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'bus' }],
+    capacities: Array,
+    colors: Array
 })
 waySchema.plugin(relationship, { relationshipPathName:'route' })
 

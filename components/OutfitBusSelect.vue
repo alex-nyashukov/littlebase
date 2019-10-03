@@ -1,20 +1,21 @@
 <template>
-    <outfit-select
-      :items="buses"
-      :value="item[field]"
-      @input="(data) => $store.commit('outfit/set_field_value', { wayId: way._id, field, value: data })"
-    >
-      <template v-slot:default="{ item }">
-        <v-layout
-          justify-space-between
-          fill-height
-          :style="'border-right: 3px solid ' + (item.borderColor)"
-        >
-          <span>{{ item.text }}</span>
-          <span class="pr-2">{{ item.count }}</span>
-        </v-layout>
-      </template>
-    </outfit-select>
+  <outfit-select
+    :label="''+buses.length"
+    :items="buses"
+    :value="item[field]"
+    @input="(data) => $store.commit('outfit/set_field_value', { wayId: way._id, field, value: data })"
+  >
+    <template v-slot:default="{ item }">
+      <v-layout
+        justify-space-between
+        fill-height
+        :style="'border-right: 3px solid ' + (item.borderColor)"
+      >
+        <span>{{ item.text }}</span>
+        <span class="pr-2">{{ item.count }}</span>
+      </v-layout>
+    </template>
+  </outfit-select>
 </template>
 
 <script>
@@ -24,7 +25,7 @@ export default {
   components: {
     OutfitSelect
   },
-  props: ["size", "way", "field"],
+  props: ["size", "way", "field", "isFiltering"],
   data() {
     return {};
   },
@@ -42,9 +43,11 @@ export default {
         count: this.count(bus._id),
         borderColor: this.color(bus._id),
         ...bus
-      }))
-      let colors = {'green': 0, 'yellow': 1, 'red': 2}
-      buses = buses.sort((a, b) => (b.count - a.count)).sort((a, b) => (colors[a.borderColor] - colors[b.borderColor]))
+      }));
+      let colors = { green: 0, yellow: 1, red: 2 };
+      buses = buses
+        .sort((a, b) => b.count - a.count)
+        .sort((a, b) => colors[a.borderColor] - colors[b.borderColor]);
       buses = buses.filter(value => {
         let isInclude = true;
         this.$store.getters["outfit/items"].forEach(item => {
@@ -52,6 +55,20 @@ export default {
             isInclude = false;
           }
         });
+        if (!this.isFiltering) {
+          return isInclude;
+        }
+        // Фильтрация
+        if (["Ремонт", "Долгостой", "СВАРЗ"].includes(value.status)) {
+          isInclude = false;
+        }
+        if(!this.way.capacities.includes(value.capacity)) {
+          isInclude = false
+        }
+        if(!this.way.colors.includes(value.color)) {
+          isInclude = false
+        }
+        // ---
         return isInclude;
       });
       return buses;
