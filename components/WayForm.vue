@@ -75,8 +75,9 @@ export default {
       return this.$store.getters['routes/list'].map((value) => ({ text: value.title, value: value._id }))
     },
     ways() {
-      let ways = Array.from(this.$store.getters["ways/list"]);
-      return ways
+      let ways = Array.from(this.$store.getters["ways/list"])
+      ways = ways.filter(way => (way._id != this.item._id))
+      ways = ways
         .sort(function(a, b) {
           if (a.title > b.title) {
             return 1;
@@ -101,6 +102,8 @@ export default {
           }`,
           value: value._id
         }));
+      ways.unshift({text: '', value: null})
+      return ways
     },
   },
   methods: {
