@@ -33,6 +33,9 @@ export default class ReportExcel {
             return
           }
           let outfitItem = outfitItems.find(value => (value.wayId == way._id))
+          if(!outfitItem) {
+            return
+          }
           worksheet
             .getRow(row)
             .getCell(2)
