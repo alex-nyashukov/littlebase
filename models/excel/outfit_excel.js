@@ -34,7 +34,7 @@ export default class ReportExcel {
             .getRow(row++)
             .getCell(1)
             .value = route.title
-        let ways = Array.from(route.ways).sort((a, b) => (a.title != b.title ? a.title < b.title ? -1 : 1 : 0))
+        let ways = Array.from(route.ways).sort((a, b) => (a.title.slice(1) != b.title.slice(1) ? a.title.slice(1) < b.title.slice(1) ? -1 : 1 : 0))
         ways.forEach(way => {
           if(!(new Way(way)).isActive(date)) {
             return
