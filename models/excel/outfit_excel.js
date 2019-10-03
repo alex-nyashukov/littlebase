@@ -23,6 +23,13 @@ export default class ReportExcel {
         if(!route.hasActiveWays(date)) {
           return
         }
+        // Нарисовать линию над маршрутом
+        for(let i=0; i<6; i++) {
+          worksheet
+            .getRow(row)
+            .getCell(i + 1)
+            .border = { top: {style:'thin'}}
+        }
         worksheet
             .getRow(row++)
             .getCell(1)
@@ -35,6 +42,13 @@ export default class ReportExcel {
           let outfitItem = outfitItems.find(value => (value.wayId == way._id))
           if(!outfitItem) {
             return
+          }
+          // Нарисовать линию над выходом
+          for(let i=0; i<6; i++) {
+            worksheet
+              .getRow(row)
+              .getCell(i + 1)
+              .border = { top: {style:'thin'}}
           }
           worksheet
             .getRow(row)
