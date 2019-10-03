@@ -8,10 +8,10 @@
     <v-file-input label="Шаблон"  @change="onFileChange"></v-file-input>
     <v-layout>
       <v-row>
-        <v-col cols="6">
+        <v-col class="text-center" cols="12" md="6">
           <v-btn rounded color="green" @click="uploadFile" dark>Загрузить</v-btn>
         </v-col>
-        <v-col cols="6">
+        <v-col class="text-center" cols="12" md="6">
           <v-btn rounded color="green" @click="get_file(true)" dark>Скачать</v-btn>
         </v-col>
       </v-row>
