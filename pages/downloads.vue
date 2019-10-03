@@ -1,171 +1,35 @@
 <template>
-  <v-layout row>
-    <v-flex xs12 sm6 md4 class="pa-3" v-for="(download, index) in downloads" :key="index">
-      <v-card>
-        <v-card-title class="green">
-          <v-icon dark>fa-file-excel</v-icon>
-          <span class="ml-3 white--text">{{ download.title }}</span>
-        </v-card-title>
-        <v-card-text class="pt-2">
-          <v-select v-if="download.month" v-model="download.month" :items="items" label="Месяц"></v-select>
-
-          <v-menu
-            v-if="download.date"
-            v-model="download.dateMenu"
-            :close-on-content-click="false"
-            max-width="290"
-          >
-            <template v-slot:activator="{ on }">
-              <v-text-field
-                :value="moment(download.date).format('DD/MM/YYYY')"
-                label="Дата"
-                readonly
-                v-on="on"
-              ></v-text-field>
-            </template>
-            <v-date-picker v-model="download.date" no-title @change="download.dateMenu = false"></v-date-picker>
-          </v-menu>
-          <v-file-input v-if="download.hasTemplate" label="Шаблон"></v-file-input>
-          <v-layout v-if="download.hasTemplate" row justify-space-between>
-            <v-flex>
-              <v-btn rounded color="green" dark>Загрузить</v-btn>
-            </v-flex>
-            <v-flex>
-              <v-btn rounded color="green" dark>Скачать</v-btn>
-            </v-flex>
-          </v-layout>
-        </v-card-text>
-        <v-card-actions class="pa-0">
-          <v-btn
-            height="52"
-            style="font-size: 1.4rem; border-top-left-radius: 0; border-top-right-radius: 0"
-            block
-            color="green"
-            dark
-            @click="get_file(download)"
-          >
-            <v-progress-circular v-if="download.isLoading" indeterminate></v-progress-circular>
-            <span v-else>Скачать</span>
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-flex>
+  <v-layout>
+    <v-row>
+    <v-col cols="12" sm="6" md="4">
+      <download-a4></download-a4>
+    </v-col>
+    <v-col cols="12" sm="6" md="4">
+      <download-a3></download-a3>
+    </v-col>
+    <v-col cols="12" sm="6" md="4">
+      <download-agreement></download-agreement>
+    </v-col>
+    <v-col cols="12" sm="6" md="4">
+      <download-report></download-report>
+    </v-col>
+    </v-row>
   </v-layout>
 </template>
 
 <script>
-import moment from "moment";
-import FileSaver from "file-saver";
-import { AgreementExcel, A3Excel, A4Excel, ReportExcel } from "@/models/excel";
+import DownloadReport from '@/components/DownloadReport.vue'
+import DownloadA4 from '@/components/DownloadA4.vue'
+import DownloadA3 from '@/components/DownloadA3.vue'
+import DownloadAgreement from '@/components/DownloadAgreement.vue'
 
 export default {
   transition: "fade",
-  data() {
-    return {
-      moment: moment,
-      menu: false,
-      downloads: [
-        {
-          hasTemplate: true,
-          isLoading: false,
-          title: "А3",
-          month: "01",
-          renderer: A3Excel,
-          code: "a3",
-          getData: async () => {
-            await Promise.all([
-              this.$store.dispatch("buses/readAll"),
-              this.$store.dispatch("templates/download", {
-                filename: "a3.xlsx"
-              })
-            ]);
-            let buses = this.$store.getters["buses/list"];
-            let template = this.$store.getters["templates/template"]("a3.xlsx");
-            return { buses, template };
-          }
-        },
-        {
-          hasTemplate: true,
-          isLoading: false,
-          title: "А4",
-          month: "01",
-          renderer: A4Excel,
-          code: "a4",
-          getData: async () => {
-            await Promise.all([
-              this.$store.dispatch("buses/readAll"),
-              this.$store.dispatch("templates/download", {
-                filename: "a4.xlsx"
-              })
-            ]);
-            let buses = this.$store.getters["buses/list"];
-            let template = this.$store.getters["templates/template"]("a4.xlsx");
-            return { buses, template };
-          }
-        },
-        {
-          hasTemplate: true,
-          isLoading: false,
-          title: "Согласие",
-          month: "01",
-          renderer: AgreementExcel,
-          code: "agreement",
-          getData: async () => {
-            await Promise.all([
-              this.$store.dispatch("drivers/readAll"),
-              this.$store.dispatch("templates/download", {
-                filename: "agreement.xlsx"
-              })
-            ]);
-            let drivers = this.$store.getters["drivers/list"];
-            let template = this.$store.getters["templates/template"](
-              "agreement.xlsx"
-            );
-            return { drivers, template };
-          }
-        },
-        {
-          isLoading: false,
-          title: "Отчет",
-          dateMenu: false,
-          date: moment().format("YYYY-MM-DD"),
-          renderer: ReportExcel,
-          code: "report",
-          getData: async () => {
-            await Promise.all([this.$store.dispatch("buses/readAll")]);
-            let buses = this.$store.getters["buses/list"];
-            return { buses, template: null };
-          }
-        }
-      ],
-      items: [
-        { text: "Январь", value: "01" },
-        { text: "Февраль", value: "02" },
-        { text: "Март", value: "03" },
-        { text: "Апрель", value: "04" },
-        { text: "Май", value: "05" },
-        { text: "Июнь", value: "06" },
-        { text: "Июль", value: "07" },
-        { text: "Август", value: "08" },
-        { text: "Сентябрь", value: "09" },
-        { text: "Октябрь", value: "10" },
-        { text: "Ноябрь", value: "11" },
-        { text: "Декабрь", value: "12" }
-      ]
-    };
-  },
-  methods: {
-    async get_file(download) {
-      download.isLoading = true;
-
-      const data = await download.getData();
-      data.date = download.date || "";
-      data.month = download.month || "";
-      const buf = await download.renderer.render(data);
-      FileSaver(new Blob([buf]), download.code + ".xlsx");
-
-      download.isLoading = false;
-    }
+  components: {
+    DownloadReport,
+    DownloadA4,
+    DownloadA3,
+    DownloadAgreement
   }
 };
 </script>
