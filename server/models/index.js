@@ -46,10 +46,12 @@ var waySchema = mongoose.Schema({
     isSummer: Boolean,
     isWinter: Boolean,
     buses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'bus' }],
+    familyWay: { type: mongoose.Schema.Types.ObjectId, ref: 'way', childPath: 'familyWay' },
     capacities: Array,
     colors: Array
 })
 waySchema.plugin(relationship, { relationshipPathName:'route' })
+waySchema.plugin(relationship, { relationshipPathName:'familyWay' })
 
 var routeSchema = mongoose.Schema({
     title: String,
@@ -58,7 +60,7 @@ var routeSchema = mongoose.Schema({
 
 var outfitSchema = mongoose.Schema({
     date: String,
-    wayId: String,
+    wayId: { type: mongoose.Schema.Types.ObjectId, ref: 'way' },
     bus: String,
     firstSmene: String,
     secondSmene: String,

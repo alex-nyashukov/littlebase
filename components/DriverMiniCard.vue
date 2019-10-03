@@ -8,7 +8,7 @@
     :disabled="$vuetify.breakpoint.xs"
   >
     <template v-slot:activator="{ on }">
-      <v-chip v-on="on">{{ item.tabnumber }}</v-chip>
+      <slot v-bind:on="on" v-bind:item="item"></slot>
     </template>
     <v-card min-width="500">
       <v-card-text>

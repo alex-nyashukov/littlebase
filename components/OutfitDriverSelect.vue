@@ -11,7 +11,11 @@
         fill-height
         :style="'border-right: 3px solid ' + (item.borderColor)"
       >
-        <span>{{ item.text }}</span>
+        <driver-mini-card :item="item" left>
+          <template v-slot:default="{ on }">
+            <span v-on="on">{{ item.text }}</span>
+          </template>
+        </driver-mini-card>
         <span class="pr-2">{{ item.count }}</span>
       </v-layout>
     </template>
@@ -20,6 +24,7 @@
 
 <script>
 import OutfitSelect from "@/components/OutfitSelect.vue";
+import DriverMiniCard from '@/components/DriverMiniCard.vue'
 import Driver from "@/models/driver";
 
 var translate_statuses = {
@@ -30,7 +35,8 @@ var translate_statuses = {
 
 export default {
   components: {
-    OutfitSelect
+    OutfitSelect,
+    DriverMiniCard
   },
   props: ["size", "way", "field", "isFiltering"],
   data() {

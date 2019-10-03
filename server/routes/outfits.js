@@ -6,7 +6,7 @@ var express = require('express')
 var router = express.Router()
 
 router.get('/:date', async (req, res) => {
-  var allItems = await Outfit.find().exec()
+  var allItems = await Outfit.find().populate('wayId').exec()
   var items = await Outfit.find({ date: req.params.date }).exec()
   var drivers = await Driver.find().exec()
   var buses = await Bus.find().exec()
@@ -15,48 +15,63 @@ router.get('/:date', async (req, res) => {
   allItems.forEach(item => {
     buses.forEach(bus => {
       let busId = ''+bus._id
-      if(bus.way == item.wayId) {
-        if(!statistic[busId]) {
-          statistic[busId] = {}
-        }
-        if(!statistic[busId][item.wayId]) {
-          statistic[busId][item.wayId] = { count: 0, isKnow: true }
-        } else {
-          statistic[busId][item.wayId].isKnow = true
+      if(bus.way == item.wayId._id) {
+        remember(statistic, busId, item.wayId._id)
+        if(item.wayId.familyWay) {
+          remember(statistic, busId, item.wayId.familyWay)
         }
       }
       if(item['bus'] == busId) {
-        increment(statistic, busId, item.wayId)
+        increment(statistic, busId, item.wayId._id)
+        if(item.wayId.familyWay) {
+          increment(statistic, busId, item.wayId.familyWay)
+        }
       }
     })
+
     drivers.forEach(driver => {
       let driverId = ''+driver._id
-      if(driver.ways.includes(item.wayId)) {
-        if(!statistic[driverId]) {
-          statistic[driverId] = {}
-        }
-        if(!statistic[driverId][item.wayId]) {
-          statistic[driverId][item.wayId] = { count: 0, isKnow: true }
-        } else {
-          statistic[driverId][item.wayId].isKnow = true
+      if(driver.ways.includes(item.wayId._id)) {
+        remember(statistic, driverId, item.wayId._id)
+        if(item.wayId.familyWay) {
+          remember(statistic, driverId, item.wayId.familyWay)
         }
       }
       switch(driverId) {
         case item['firstSmene']:
-          increment(statistic, driverId, item.wayId)
+          increment(statistic, driverId, item.wayId._id)
+          if(item.wayId.familyWay) {
+            increment(statistic, driverId, item.wayId.familyWay)
+          }
           break
         case item['secondSmene']:
-          increment(statistic, driverId, item.wayId)
+          increment(statistic, driverId, item.wayId._id)
+          if(item.wayId.familyWay) {
+            increment(statistic, driverId, item.wayId.familyWay)
+          }
           break
         case item['allDay']:
-          increment(statistic, driverId, item.wayId)
+          increment(statistic, driverId, item.wayId._id)
+          if(item.wayId.familyWay) {
+            increment(statistic, driverId, item.wayId.familyWay)
+          }
           break
       }
-
     })
   })
 
   res.send({items, statistic})
+
+  function remember(statistic, _id, wayId) {
+    if(!statistic[_id]) {
+      statistic[_id] = {}
+    }
+    if(!statistic[_id][wayId]) {
+      statistic[_id][wayId] = { count: 0, isKnow: true }
+    } else {
+      statistic[_id][wayId].isKnow = true
+    }
+  }
 
   function increment(statistic, _id, wayId) {
     if(!statistic[_id]) {

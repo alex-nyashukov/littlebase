@@ -20,6 +20,7 @@ export default class Way {
   isSummer = false
   isWinter = false
   buses = []
+  familyWay = null
   capacities = []
   colors = []
 

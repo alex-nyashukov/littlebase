@@ -71,7 +71,11 @@
                     :key="driver._id"
                     :item="driver"
                     left
-                  ></driver-mini-card>
+                  >
+                <template v-slot:default="{ on }">
+                  <v-chip v-on="on">{{ driver.tabnumber }}</v-chip>
+                </template>
+              </driver-mini-card>
                 </td>
                 <td>
                   <driver-mini-card
@@ -79,7 +83,11 @@
                     :key="driver._id"
                     :item="driver"
                     left
-                  ></driver-mini-card>
+                  >
+                <template v-slot:default="{ on }">
+                  <v-chip v-on="on">{{ driver.tabnumber }}</v-chip>
+                </template>
+              </driver-mini-card>
                 </td>
                 <td>
                   <driver-mini-card
@@ -87,7 +95,11 @@
                     :key="driver._id"
                     :item="driver"
                     left
-                  ></driver-mini-card>
+                  >
+                <template v-slot:default="{ on }">
+                  <v-chip v-on="on">{{ driver.tabnumber }}</v-chip>
+                </template>
+              </driver-mini-card>
                 </td>
               </tr>
             </tbody>
@@ -99,7 +111,11 @@
               :key="driver._id"
               :item="driver"
               left
-            ></driver-mini-card>
+            >
+                <template v-slot:default="{ on }">
+                  <v-chip v-on="on">{{ driver.tabnumber }}</v-chip>
+                </template>
+              </driver-mini-card>
           </template>
         </v-col>
       </v-row>
@@ -124,7 +140,11 @@
                 :key="driver._id"
                 :item="driver"
                 left
-              ></driver-mini-card>
+              >
+                <template v-slot:default="{ on }">
+                  <v-chip v-on="on">{{ driver.tabnumber }}</v-chip>
+                </template>
+              </driver-mini-card>
             </td>
             <td>
               <driver-mini-card
@@ -132,7 +152,11 @@
                 :key="driver._id"
                 :item="driver"
                 left
-              ></driver-mini-card>
+              >
+                <template v-slot:default="{ on }">
+                  <v-chip v-on="on">{{ driver.tabnumber }}</v-chip>
+                </template>
+              </driver-mini-card>
             </td>
             <td>
               <driver-mini-card
@@ -140,7 +164,11 @@
                 :key="driver._id"
                 :item="driver"
                 left
-              ></driver-mini-card>
+              >
+                <template v-slot:default="{ on }">
+                  <v-chip v-on="on">{{ driver.tabnumber }}</v-chip>
+                </template>
+              </driver-mini-card>
             </td>
           </tr>
         </tbody>

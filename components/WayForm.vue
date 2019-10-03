@@ -54,8 +54,9 @@
         <v-switch v-model="item.isWeekday" label="Будни"></v-switch>
         <v-switch v-model="item.isSummer" label="Лето"></v-switch>
         <v-switch v-model="item.isWinter" label="Зима"></v-switch>
-        <v-select v-model="item.capacities" :items="['МВ','СВ','БВ','ОБВ']" multiple></v-select>
-        <v-select v-model="item.colors" :items="['Зеленый','Голубой','Синий']" multiple></v-select>
+        <v-select v-model="item.familyWay" :items="ways" label="Смежный выход"></v-select>
+        <v-select v-model="item.capacities" :items="['МВ','СВ','БВ','ОБВ']" multiple label="Вместимости автобусов"></v-select>
+        <v-select v-model="item.colors" :items="['Зеленый','Голубой','Синий']" multiple label="Цвета автобусов"></v-select>
       </v-flex>
     </v-layout>
   </v-form>
@@ -72,12 +73,41 @@ export default {
   computed: {
     routes() {
       return this.$store.getters['routes/list'].map((value) => ({ text: value.title, value: value._id }))
-    }
+    },
+    ways() {
+      let ways = Array.from(this.$store.getters["ways/list"]);
+      return ways
+        .sort(function(a, b) {
+          if (a.title > b.title) {
+            return 1;
+          }
+          if (a.title < b.title) {
+            return -1;
+          }
+          return 0;
+        })
+        .sort(function(a, b) {
+          if (a.route.title > b.route.title) {
+            return 1;
+          }
+          if (a.route.title < b.route.title) {
+            return -1;
+          }
+          return 0;
+        })
+        .map(value => ({
+          text: `${value.route.title}/${value.title} ${
+            value.isWeekend ? "В" : ""
+          }`,
+          value: value._id
+        }));
+    },
   },
   methods: {
   },
   mounted() {
     this.$store.dispatch('routes/readAll')
+    this.$store.dispatch('ways/readAll')
   }
 }
 </script>
