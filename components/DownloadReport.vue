@@ -44,7 +44,7 @@ export default {
         buses: this.buses,
         date: this.date
       });
-      FileSaver(new Blob([buf]), "report.xlsx");
+      FileSaver(new Blob([buf]), `Отчет за ${moment(this.date).format('DD-MM-YY')}.xlsx`);
 
       this.isLoading = false;
     }

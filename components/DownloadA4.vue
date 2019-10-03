@@ -5,14 +5,14 @@
     :loading="isLoading"
   >
     <v-select v-model="month" :items="items" label="Месяц"></v-select>
-    <v-file-input label="Шаблон"></v-file-input>
+    <v-file-input label="Шаблон"  @change="onFileChange"></v-file-input>
     <v-layout>
       <v-row>
         <v-col cols="6">
-          <v-btn rounded color="green" dark>Загрузить</v-btn>
+          <v-btn rounded color="green" @click="uploadFile" dark>Загрузить</v-btn>
         </v-col>
         <v-col cols="6">
-          <v-btn rounded color="green" dark>Скачать</v-btn>
+          <v-btn rounded color="green" @click="get_file(true)" dark>Скачать</v-btn>
         </v-col>
       </v-row>
     </v-layout>
@@ -34,6 +34,7 @@ export default {
   },
   data() {
     return {
+      file: null,
       isLoading: false,
       renderer: A4Excel,
       month: "01",
@@ -58,26 +59,44 @@ export default {
       return this.$store.getters['buses/list']
     },
     template() {
-      return this.$store.getters['templates/template']('a4.xlsx')
+      return this.$store.getters['templates/template']('templates/a4.xlsx')
     }
   },
   methods: {
-    async get_file() {
+    async get_file(empty = false) {
       this.isLoading = true;
 
       await Promise.all([
         this.$store.dispatch('buses/readAll'),
-        this.$store.dispatch('templates/download', { filename: 'a4.xlsx' })
+        this.$store.dispatch('templates/download', { filename: 'templates/a4.xlsx' })
       ])
-      const buf = await this.renderer.render({ 
+      let buf = null
+      if(empty){
+        buf = this.template
+      } else {
+        buf = await this.renderer.render({ 
         buses: this.buses,
         template: this.template,
         month: this.month
       });
-      FileSaver(new Blob([buf]), "a4.xlsx");
+        
+      }
+      FileSaver(new Blob([buf]), `Журнал A4 на ${this.items.find(value => (value.value == this.month)).text}.xlsx`);
 
       this.isLoading = false;
-    }
+    },
+    onFileChange(file) {
+      this.file = file
+    },
+    async uploadFile() {
+      this.isLoading = true;
+      let formData = new FormData();
+      formData.append("template", this.file);
+      let { data } = await this.$axios.post("/api/templates/a4.xlsx", formData, {
+        headers: { enctype: "multipart/form-data" }
+      });
+      this.isLoading = false;
+    },
   }
 };
 </script>

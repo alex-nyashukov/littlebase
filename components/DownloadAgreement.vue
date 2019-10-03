@@ -5,14 +5,14 @@
     :loading="isLoading"
   >
     <v-select v-model="month" :items="items" label="Месяц"></v-select>
-    <v-file-input label="Шаблон"></v-file-input>
+    <v-file-input label="Шаблон"  @change="onFileChange"></v-file-input>
     <v-layout>
       <v-row>
         <v-col cols="6">
-          <v-btn rounded color="green" dark>Загрузить</v-btn>
+          <v-btn rounded color="green" @click="uploadFile" dark>Загрузить</v-btn>
         </v-col>
         <v-col cols="6">
-          <v-btn rounded color="green" dark>Скачать</v-btn>
+          <v-btn rounded color="green" @click="get_file(true)" dark>Скачать</v-btn>
         </v-col>
       </v-row>
     </v-layout>
@@ -34,6 +34,7 @@ export default {
   },
   data() {
     return {
+      file: null,
       isLoading: false,
       renderer: AgreementExcel,
       month: "01",
@@ -58,26 +59,44 @@ export default {
       return this.$store.getters['drivers/list']
     },
     template() {
-      return this.$store.getters['templates/template']('agreement.xlsx')
+      return this.$store.getters['templates/template']('templates/agreement.xlsx')
     }
   },
   methods: {
-    async get_file() {
+    async get_file(empty = false) {
       this.isLoading = true;
 
       await Promise.all([
         this.$store.dispatch('drivers/readAll'),
-        this.$store.dispatch('templates/download', { filename: 'agreement.xlsx' })
+        this.$store.dispatch('templates/download', { filename: 'templates/agreement.xlsx' })
       ])
-      const buf = await this.renderer.render({ 
+      let buf = null
+      if(empty){
+        buf = this.template
+      } else {
+        buf = await this.renderer.render({ 
         drivers: this.drivers,
         template: this.template,
         month: this.month
       });
-      FileSaver(new Blob([buf]), "agreement.xlsx");
+        
+      }
+      FileSaver(new Blob([buf]), `Согласие за ${this.items.find(value => (value.value == this.month)).text}.xlsx`);
 
       this.isLoading = false;
-    }
+    },
+    onFileChange(file) {
+      this.file = file
+    },
+    async uploadFile() {
+      this.isLoading = true;
+      let formData = new FormData();
+      formData.append("template", this.file);
+      let { data } = await this.$axios.post("/api/templates/agreement.xlsx", formData, {
+        headers: { enctype: "multipart/form-data" }
+      });
+      this.isLoading = false;
+    },
   }
 };
 </script>

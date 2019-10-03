@@ -5,6 +5,8 @@ export default class AgreementExcel {
       const workbook = new Excel.Workbook();
       await workbook.xlsx.load(template)
 
+      let sortedDrivers = Array.from(drivers).sort((a, b) => (a.tabnumber - b.tabnumber)) 
+
       var worksheet = workbook.getWorksheet('main')
 
       let text_month = [
@@ -32,7 +34,7 @@ export default class AgreementExcel {
       var rowNumber = 3
       var columnNumber = 0
       var globalColumnNumber = 0
-      drivers.forEach(driver => {
+      sortedDrivers.forEach(driver => {
           columnNumber = 2 + globalColumnNumber * 4
           worksheet.getRow(rowNumber)
               .getCell(columnNumber)
