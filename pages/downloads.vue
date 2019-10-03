@@ -13,6 +13,9 @@
     <v-col cols="12" sm="6" md="4">
       <download-report></download-report>
     </v-col>
+    <v-col cols="12" sm="6" md="4">
+      <download-outfit></download-outfit>
+    </v-col>
     </v-row>
   </v-layout>
 </template>
@@ -22,6 +25,7 @@ import DownloadReport from '@/components/DownloadReport.vue'
 import DownloadA4 from '@/components/DownloadA4.vue'
 import DownloadA3 from '@/components/DownloadA3.vue'
 import DownloadAgreement from '@/components/DownloadAgreement.vue'
+import DownloadOutfit from '@/components/DownloadOutfit.vue'
 
 export default {
   transition: "fade",
@@ -29,7 +33,8 @@ export default {
     DownloadReport,
     DownloadA4,
     DownloadA3,
-    DownloadAgreement
+    DownloadAgreement,
+    DownloadOutfit
   }
 };
 </script>
