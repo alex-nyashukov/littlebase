@@ -110,7 +110,7 @@ export default {
           return;
         }
         let buses = Array.from(this.buses).filter(bus =>
-          way.capacities.includes(bus.capacity) || true
+          way.capacities.includes(bus.capacity)
         );
         let statuses = undefined;
         if (way.isTwoSmene) {
