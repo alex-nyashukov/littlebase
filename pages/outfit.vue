@@ -17,6 +17,7 @@
           </v-layout>
         </v-flex>
         <v-spacer></v-spacer>
+        <v-btn dark color="grey lighten-1" @click="auto" :loading="isSaving" class="mr-3">Авто</v-btn>
         <v-switch v-model="isFiltering" inset label="Фильтр" class="pr-3"></v-switch>
         <v-btn dark color="green lighten-1" @click="save" :loading="isSaving">Сохранить</v-btn>
       </v-card-title>
@@ -47,6 +48,7 @@
 
 <script>
 import moment from "moment";
+import { mapGetters } from "vuex";
 
 import OutfitRoute from "@/components/OutfitRoute.vue";
 import MenuDatePicker from "@/components/MenuDatePicker";
@@ -68,52 +70,140 @@ export default {
   },
   watch: {
     async date(val) {
-      this.isLoading = true
-      await this.$store.dispatch("outfit/readByDate", { date: val })
-      this.isLoading = false
+      this.isLoading = true;
+      await this.$store.dispatch("outfit/readByDate", { date: val });
+      this.isLoading = false;
     }
   },
   computed: {
-    routes() {
-      return this.$store.getters["routes/list"];
-    },
+    ...mapGetters({
+      buses: "buses/list",
+      items: "outfit/items",
+      drivers: "drivers/list",
+      routes: "routes/list",
+      ways: "ways/list",
+      statistic: "outfit/statistic"
+    }),
     isWeekend() {
       return [0, 6].includes(moment(this.date).day());
     }
   },
   methods: {
+    auto() {
+      let drivers = { firstSmene: [], secondSmene: [], allDay: [] };
+      this.drivers.forEach(driver => {
+        switch (driver.statusesByDate({ date: this.date, count: 1 })[0]) {
+          case "Рабочий":
+            drivers.allDay.push(driver);
+            break;
+          case "Первая см.":
+            drivers.firstSmene.push(driver);
+            break;
+          case "Вторая см.":
+            drivers.secondSmene.push(driver);
+            break;
+        }
+      });
+      this.$store.commit("outfit/clear_items");
+      this.ways.forEach(way => {
+        if (!way.isActive(this.date)) {
+          return;
+        }
+        let buses = Array.from(this.buses).filter(bus =>
+          way.capacities.includes(bus.capacity) || true
+        );
+        let statuses = undefined;
+        if (way.isTwoSmene) {
+          statuses = ["allDay"];
+        } else {
+          statuses = ["firstSmene", "secondSmene"];
+        }
+        statuses.forEach(status => {
+          let pair = drivers[status]
+            .filter(
+              driver =>
+                this.statistic[driver._id] &&
+                this.statistic[driver._id][way._id]
+            )
+            .map(driver => ({
+              id: driver._id,
+              count: this.statistic[driver._id][way._id].count
+            }))
+            .reduce((p, v) => (p.count < v.count ? v : p), {
+              id: null,
+              count: 0
+            });
+
+          drivers[status].splice(
+            drivers[status].findIndex(driver => driver._id == pair.id),
+            1
+          );
+          this.$store.commit("outfit/set_field_value", {
+            wayId: way._id,
+            field: status,
+            value: pair.id
+          });
+        });
+
+        let pair = buses
+          .filter(
+            bus =>
+              this.statistic[bus._id] && this.statistic[bus._id][way._id]
+          )
+          .map(bus => ({
+            id: bus._id,
+            count: this.statistic[bus._id][way._id].count
+          }))
+          .reduce((p, v) => (p.count < v.count ? v : p), {
+            id: null,
+            count: 0
+          });
+
+        buses.splice(
+          buses.findIndex(bus => bus._id == pair.id),
+          1
+        );
+        this.$store.commit("outfit/set_field_value", {
+          wayId: way._id,
+          field: 'bus',
+          value: pair.id
+        });
+      });
+    },
     async save() {
-      this.isSaving = true
-      await this.$store.dispatch("outfit/save")
-      await this.$store.dispatch("outfit/readByDate", { date: this.date })
-      this.isSaving = false
+      this.isSaving = true;
+      await this.$store.dispatch("outfit/save");
+      await this.$store.dispatch("outfit/readByDate", { date: this.date });
+      this.isSaving = false;
     },
     nextDay() {
       this.$refs.datePicker.nextDay();
     },
     async update() {
-      this.isLoading = true
+      this.isLoading = true;
       await Promise.all([
+        this.$store.dispatch("ways/readAll"),
         this.$store.dispatch("routes/readAll"),
         this.$store.dispatch("drivers/readAll"),
         this.$store.dispatch("buses/readAll"),
         this.$store.dispatch("outfit/readByDate", { date: this.date })
-      ])
-      this.isLoading = false
+      ]);
+      this.isLoading = false;
     },
     prevDay() {
       this.$refs.datePicker.prevDay();
     }
   },
   async mounted() {
-    this.isLoading = true
+    this.isLoading = true;
     await Promise.all([
+      this.$store.dispatch("ways/readAll"),
       this.$store.dispatch("routes/readAll"),
       this.$store.dispatch("drivers/readAll"),
       this.$store.dispatch("buses/readAll"),
       this.$store.dispatch("outfit/readByDate", { date: this.date })
-    ])
-    this.isLoading = false
+    ]);
+    this.isLoading = false;
   }
 };
 </script>

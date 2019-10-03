@@ -40,6 +40,9 @@ export const mutations = {
       state.items.splice(index, 1, obj)
     }
   },
+  clear_items: (state) => {
+    state.items = []
+  },
   set_outfit: (state, { date, items, statistic }) => {
     state.date = date
     state.items = items
