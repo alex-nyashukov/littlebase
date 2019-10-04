@@ -2,7 +2,7 @@
   <v-layout v-if="localWay.isActive(date)" align-center>
     <v-row class="px-3">
       <v-col class="px-0" cols="0" md="1"></v-col>
-      <v-col class="px-0 align-center" cols="12" md="2"><h3>Выход {{ way.title }}</h3></v-col>
+      <v-col class="px-0 align-center" cols="12" md="2"><h3 :class="isActive ? 'black--text' : ''">Выход {{ way.title }}</h3></v-col>
       <v-subheader class="hidden-md-and-up">Автобус</v-subheader>
       <v-col class="px-0" cols="12" md="3">
         <outfit-bus-select
@@ -53,7 +53,7 @@ export default {
     OutfitDriverSelect,
     OutfitBusSelect,
   },
-  props: ["way", "date", "isFiltering"],
+  props: ["way", "date", "isFiltering", "isActive"],
   data() {
     return {
 

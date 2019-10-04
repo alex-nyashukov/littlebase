@@ -16,7 +16,10 @@ module.exports = {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { href: "https://use.fontawesome.com/releases/v5.0.13/css/all.css", rel: "stylesheet" }
-    ]
+    ],
+    script: [
+      { src: '/js/annyang.min.js' }
+    ],
   },
   loading: { color: '#fff' },
   css: [

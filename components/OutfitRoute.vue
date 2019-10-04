@@ -17,6 +17,7 @@
         :way="way"
         :date="date"
         :isFiltering="isFiltering"
+        :isActive="activeWay && activeWay._id == way._id"
       ></outfit-way>
     </v-card-text>
   </v-card>
@@ -29,7 +30,7 @@ export default {
   components: {
     OutfitWay
   },
-  props: ["route", "date", "isFiltering"],
+  props: ["route", "date", "isFiltering", "activeWay"],
   computed: {
     localWays() {
       return Array.from(this.route.ways).sort((a, b) => (a.title.slice(1) != b.title.slice(1) ? a.title.slice(1) < b.title.slice(1) ? -1 : 1 : 0))

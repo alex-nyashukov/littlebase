@@ -1,5 +1,14 @@
 <template>
   <v-layout column>
+    <v-snackbar
+      v-model="snackbar.isOpen"
+      :timeout="3000"
+      top
+      right
+      color="green lighten-1"
+    >
+      {{ snackbar.text }}
+    </v-snackbar>
     <v-card class="mb-3">
       <v-card-title class="pt-2">
         <v-flex xs12 sm7 md4>
@@ -40,7 +49,7 @@
     <v-tabs-items v-else v-model="currentRoute">
       <template v-for="route in routes">
         <v-tab-item v-if="route.hasActiveWays(date)" :key="route._id" :value="route._id">
-          <outfit-route :route="route" :date="date" :isFiltering="isFiltering"></outfit-route>
+          <outfit-route :route="route" :date="date" :isFiltering="isFiltering" :activeWay="activeWay"></outfit-route>
         </v-tab-item>
       </template>
     </v-tabs-items>
@@ -53,15 +62,22 @@ import { mapGetters } from "vuex";
 
 import OutfitRoute from "@/components/OutfitRoute.vue";
 import MenuDatePicker from "@/components/MenuDatePicker";
+import Toby from '@/mixins/toby_outfit'
 
 export default {
   transition: "fade",
+  mixins: [Toby],
   components: {
     OutfitRoute,
     MenuDatePicker
   },
   data() {
     return {
+      activeWay: '',
+      snackbar: {
+        isOpen: false,
+        text: ''
+      },
       isFiltering: false,
       isSaving: false,
       isLoading: false,
