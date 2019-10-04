@@ -12,7 +12,7 @@
     </v-card-title>
     <v-card-text>
       <outfit-way 
-        v-for="way in route.ways" 
+        v-for="way in localWays" 
         :key="way._id" 
         :way="way"
         :date="date"
@@ -31,6 +31,9 @@ export default {
   },
   props: ["route", "date", "isFiltering"],
   computed: {
+    localWays() {
+      return Array.from(this.route.ways).sort((a, b) => (a.title.slice(1) != b.title.slice(1) ? a.title.slice(1) < b.title.slice(1) ? -1 : 1 : 0))
+    }
   },
   methods: {
   }
