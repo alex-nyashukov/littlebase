@@ -106,8 +106,8 @@ const setupProgress = (axios, ctx) => {
 export default (ctx, inject) => {
   // baseURL
   const baseURL = process.browser
-      ? 'http://194.67.90.97'
-      : (process.env._AXIOS_BASE_URL_ || 'http://194.67.90.97')
+      ? 'https://nyashukoff.ru'
+      : (process.env._AXIOS_BASE_URL_ || 'https://nyashukoff.ru')
 
   // Create fresh objects for all default header scopes
   // Axios creates only one which is shared across SSR requests!
