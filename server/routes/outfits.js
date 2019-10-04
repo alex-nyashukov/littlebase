@@ -13,6 +13,9 @@ router.get('/:date', async (req, res) => {
   var statistic = {}
 
   allItems.forEach(item => {
+    if(!item.wayId) {
+      return
+    }
     buses.forEach(bus => {
       let busId = ''+bus._id
       if(bus.way == item.wayId._id) {
