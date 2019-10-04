@@ -17,6 +17,7 @@
           </v-layout>
         </v-flex>
         <v-spacer></v-spacer>
+        <v-btn text @click="$store.commit('outfit/clear_items')" class="mr-3">Очистить</v-btn>
         <v-btn dark color="grey lighten-1" @click="auto" :loading="isSaving" class="mr-3">Авто</v-btn>
         <v-switch v-model="isFiltering" inset label="Фильтр" class="pr-3"></v-switch>
         <v-btn dark color="green lighten-1" @click="save" :loading="isSaving">Сохранить</v-btn>
