@@ -40,6 +40,9 @@ export const mutations = {
       state.items.splice(index, 1, obj)
     }
   },
+  clear_ways: (state, { ways }) => {
+    state.items = state.items.filter(item => !ways.includes(item.wayId))
+  },
   clear_items: (state) => {
     state.items = []
   },

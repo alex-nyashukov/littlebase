@@ -26,7 +26,19 @@
           </v-layout>
         </v-flex>
         <v-spacer></v-spacer>
-        <v-btn text @click="$store.commit('outfit/clear_items')" class="mr-3">Очистить</v-btn>
+        <v-menu offset-y left>
+          <template v-slot:activator="{ on }">
+            <v-btn v-on="on" text class="mr-3">Очистить</v-btn>
+          </template>
+          <v-list>
+            <v-list-item @click="clear_route">
+              <v-list-item-content>Маршрут</v-list-item-content>
+            </v-list-item>
+            <v-list-item @click="$store.commit('outfit/clear_items')">
+              <v-list-item-content>Наряд</v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-menu>
         <v-btn dark color="grey lighten-1" @click="auto" :loading="isSaving" class="mr-3">Авто</v-btn>
         <v-switch v-model="isFiltering" inset label="Фильтр" class="pr-3"></v-switch>
         <v-btn dark color="green lighten-1" @click="save" :loading="isSaving">Сохранить</v-btn>
@@ -106,6 +118,9 @@ export default {
     }
   },
   methods: {
+    clear_route() {
+      this.$store.commit('outfit/clear_ways', { ways: this.routes.find(route => route._id == this.currentRoute).ways.map(way => way._id)})
+    },
     auto() {
       let drivers = { firstSmene: [], secondSmene: [], allDay: [] };
       this.drivers.forEach(driver => {
