@@ -84,12 +84,19 @@ export default {
             isInclude = true;
           }
         });
+        let status = value.statusesByDate({ date: this.date, count: 1, withExceptions: true })[0]
+        if(['Больничный', 'Отпуск', 'Выходной'].includes(status.status)) {
+          value.text += " (" + status.status + ")"
+        }
+
         if (!this.isFiltering) {
           return isInclude;
         }
         // Фильтрация
+        
         if (
-          translate_statuses[value.statusesByDate({ date: this.date, count: 1 })[0]] != this.field
+          (translate_statuses[status.status] != this.field) &&
+          (!['Больничный', 'Отпуск', 'Выходной'].includes(status.status))
         ) {
           isInclude = false;
         }

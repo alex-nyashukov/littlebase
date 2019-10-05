@@ -30,7 +30,7 @@ export default {
       let new_route = this.routes.find(route => (route.title == routetitle.replace(/\s/g, '')))
       if(new_route && new_route.hasActiveWays(this.date)) {
         this.currentRoute = new_route._id
-        this.snackbar.text = `Выбран выход ${new_route.title}`
+        this.snackbar.text = `Выбран маршрут ${new_route.title}`
         this.snackbar.isOpen = true
       } else {
         this.snackbar.text = `Маршрут ${routetitle.replace(/\s/g, '')} не найден`
