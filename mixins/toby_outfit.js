@@ -63,9 +63,14 @@ export default {
     set_driver(field, tabnumber) {
       let driver = this.drivers.find(driver => driver.tabnumber == tabnumber.replace(/\s/g, ''))
       if(driver && this.activeWay) {
-        this.$store.commit('outfit/set_field_value', { wayId: this.activeWay._id, field , value: driver._id })
-        this.snackbar.text = `Водитель ${driver.tabnumber.replace(/\s/g, '')} установлен`
-        this.snackbar.isOpen = true
+        if(this.activeWay.isTwoSmene && field == 'allDay' || !this.activeWay.isTwoSmene && ['firstSmene', 'secondSmene'].includes(field)) {
+          this.$store.commit('outfit/set_field_value', { wayId: this.activeWay._id, field , value: driver._id })
+          this.snackbar.text = `Водитель ${driver.tabnumber.replace(/\s/g, '')} установлен`
+          this.snackbar.isOpen = true
+        } else {
+          this.snackbar.text = `Выход не соответствует запросу`
+          this.snackbar.isOpen = true
+        }
       } else {
         this.snackbar.text = `Водитель ${tabnumber.replace(/\s/g, '')} не найден`
         this.snackbar.isOpen = true

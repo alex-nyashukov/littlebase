@@ -52,6 +52,9 @@ export default {
     item() {
       return this.$store.getters["outfit/item"](this.way._id);
     },
+    ways() {
+      return this.$store.getters["ways/list"]
+    },
     drivers() {
       let drivers = this.$store.getters["drivers/list"].map(driver => ({
         text: driver.tabnumber,
@@ -71,7 +74,10 @@ export default {
           let fields = ["allDay", "firstSmene", "secondSmene"];
           fields.forEach(field => {
             if (value._id == item[field]) {
-              isInclude = false;
+              let way = this.ways.find(way => way._id == item.wayId)
+              if(way) {
+                value.text = value.text + " (" + way.route.title + "/" + way.title + ")"
+              }
             }
           });
           if (value._id == item[this.field] && item.wayId == this.way._id) {
