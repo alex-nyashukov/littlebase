@@ -39,7 +39,20 @@
             </v-list-item>
           </v-list>
         </v-menu>
-        <v-btn dark color="grey lighten-1" @click="auto" :loading="isSaving" class="mr-3">Авто</v-btn>
+        <v-menu offset-y left>
+          <template v-slot:activator="{ on }">
+            <v-btn v-on="on" text class="mr-3">Заполнить</v-btn>
+          </template>
+          <v-list>
+            <v-list-item @click="auto">
+              <v-list-item-content>Авто</v-list-item-content>
+            </v-list-item>
+              <v-list-item @click="$refs.file.click()">
+                <v-list-item-content>Из файла</v-list-item-content>
+                <input ref="file" type="file" class="d-none" id="file" @input="onFileChange" />
+              </v-list-item>
+          </v-list>
+        </v-menu>
         <v-switch v-model="isFiltering" inset label="Фильтр" class="pr-3"></v-switch>
         <v-btn dark color="green lighten-1" @click="save" :loading="isSaving">Сохранить</v-btn>
       </v-card-title>
@@ -71,7 +84,9 @@
 <script>
 import moment from "moment";
 import { mapGetters } from "vuex";
+import Excel from "exceljs/dist/exceljs"
 
+import Way from '@/models/way'
 import OutfitRoute from "@/components/OutfitRoute.vue";
 import MenuDatePicker from "@/components/MenuDatePicker";
 import Toby from '@/mixins/toby_outfit'
@@ -118,6 +133,95 @@ export default {
     }
   },
   methods: {
+    async onFileChange(e) {
+      if (e.target.files && e.target.files.length) {
+        let file = e.target.files[0];
+        let fileData = null
+        let reader = new FileReader();
+        reader.onload = async e => {
+          fileData = e.target.result;
+          const workbook = new Excel.Workbook();
+          await workbook.xlsx.load(fileData)
+          let worksheet = workbook.getWorksheet(1)
+          this.parse_outfit_excel(worksheet)
+          this.$refs.file.value = null
+        };
+        reader.readAsArrayBuffer(file)
+      }
+    },
+    parse_outfit_excel(worksheet) {
+      let start_row_number = 10
+      let start_column_number = 4
+      let row_number = start_row_number
+      let column_number = start_column_number
+      let bus_column_shift = 1
+      let first_smene_column_shift = 3
+      let second_smene_column_shift = 7
+      let value = ''
+      let current_route = null
+      let current_way = null
+      while(true){
+        if(row_number == 89) {
+          row_number = start_row_number
+          column_number = start_column_number + 13
+          first_smene_column_shift = 4
+        }
+        value = worksheet
+          .getRow(row_number)
+          .getCell(column_number)
+          .value
+        if(!value) {
+          row_number++
+          continue
+        }
+        if(value.includes('Маршрут')) {
+          value = value.trim()
+          let route_title = value.split(' ').slice(-1)
+          current_route = this.routes.find(route => (route.title == route_title && route.hasActiveWays(this.date)))
+        } else if(value.includes('Резерв')) {
+          break
+        } else {
+          if(!current_route) {
+            row_number++
+            continue
+          }
+          value = value.trim()
+          let way_title = value.split(' ')[0]
+          current_way = current_route.ways.find(way => (way.title == way_title && (new Way(way)).isActive(this.date)))
+          if(!current_way) {
+            row_number++
+            continue
+          }
+          let busnumber = worksheet
+            .getRow(row_number)
+            .getCell(column_number + bus_column_shift)
+            .value
+          busnumber = busnumber && (''+busnumber).slice(0, 6)
+          let bus = busnumber && this.buses.find(bus => (bus.busnumber == busnumber))
+          let first_smene_tabnumber = worksheet
+            .getRow(row_number)
+            .getCell(column_number + first_smene_column_shift)
+            .value
+          first_smene_tabnumber = first_smene_tabnumber && (''+first_smene_tabnumber).slice(-4)
+          let first_smene = first_smene_tabnumber && this.drivers.find(driver => (driver.tabnumber == first_smene_tabnumber))
+          let second_smene_tabnumber = worksheet
+            .getRow(row_number)
+            .getCell(column_number + second_smene_column_shift)
+            .value
+          second_smene_tabnumber = second_smene_tabnumber && (''+second_smene_tabnumber).slice(-4)
+          let second_smene = first_smene_tabnumber && this.drivers.find(driver => (driver.tabnumber == second_smene_tabnumber))
+          
+          this.$store.commit('outfit/set_field_value', { wayId: current_way._id, field: 'bus', value: bus && bus._id })
+          if(current_way.isTwoSmene) {
+            this.$store.commit('outfit/set_field_value', { wayId: current_way._id, field: 'allDay', value: first_smene && first_smene._id })
+          } else {
+            this.$store.commit('outfit/set_field_value', { wayId: current_way._id, field: 'firstSmene', value: first_smene && first_smene._id })
+            this.$store.commit('outfit/set_field_value', { wayId: current_way._id, field: 'secondSmene', value: second_smene && second_smene._id })
+          }
+        }
+        row_number++
+      } 
+    },
     clear_route() {
       this.$store.commit('outfit/clear_ways', { ways: this.routes.find(route => route._id == this.currentRoute).ways.map(way => way._id)})
     },
