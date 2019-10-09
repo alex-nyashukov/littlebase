@@ -26,6 +26,9 @@
           </v-layout>
         </v-flex>
         <v-spacer></v-spacer>
+        <v-btn dark color="green lighten-1" @click="save" :loading="isSaving">Сохранить</v-btn>
+      </v-card-title>
+      <v-card-title class="pt-2">
         <v-menu offset-y left>
           <template v-slot:activator="{ on }">
             <v-btn v-on="on" text class="mr-3">Очистить</v-btn>
@@ -53,8 +56,9 @@
               </v-list-item>
           </v-list>
         </v-menu>
+        <v-spacer></v-spacer>
         <v-switch v-model="isFiltering" inset label="Фильтр" class="pr-3"></v-switch>
-        <v-btn dark color="green lighten-1" @click="save" :loading="isSaving">Сохранить</v-btn>
+        <v-switch v-model="micro" inset label="Микрофон"/>
       </v-card-title>
       <v-card-title class="pt-2">
         <v-tabs v-model="currentRoute" centered>

@@ -1,6 +1,11 @@
 import Way from '@/models/way'
 
 export default {
+  data() {
+    return {
+      micro: false
+    }
+  },
   created: function () {
     if (annyang) {
       var commands = {
@@ -14,7 +19,6 @@ export default {
       }
       annyang.addCommands(commands);
       annyang.setLanguage('ru');
-      annyang.start();
     }
   },
   beforeDestroy: function() {
@@ -23,6 +27,13 @@ export default {
   watch: {
     currentRoute() {
       this.activeWay = null
+    },
+    micro(val) {
+      if(val) {
+        annyang.start();
+      } else {
+        annyang.abort()
+      }
     }
   },
   methods: {
