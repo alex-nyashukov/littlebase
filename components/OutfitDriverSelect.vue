@@ -13,7 +13,10 @@
       >
         <driver-mini-card :item="item" left>
           <template v-slot:default="{ on }">
-            <span v-on="on">{{ item.text }}</span>
+            <span v-on="on">
+              <v-icon x-small>{{ item_bus == item.bus._id ? 'fa-check' : 'fa-times' }}</v-icon>
+              {{ item.text }}
+            </span>
           </template>
         </driver-mini-card>
         <span class="pr-2">{{ item.count }}</span>
@@ -54,6 +57,9 @@ export default {
     },
     ways() {
       return this.$store.getters["ways/list"]
+    },
+    item_bus() {
+      return this.$store.getters["outfit/item_bus"](this.way._id)
     },
     drivers() {
       let drivers = this.$store.getters["drivers/list"].map(driver => ({

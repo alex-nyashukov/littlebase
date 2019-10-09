@@ -22,6 +22,13 @@ export const getters = {
       return state.items[index]
     }
   },
+  item_bus: (state) => (wayId) => {
+    let item = state.items.find(value => (value.wayId == wayId))
+    if(item) {
+      return item.bus
+    }
+    return null
+  },
   availableBuses: (state) => (self) => {
     return self.$store.getters['buses/list'].map(item => ({ text: item.busnumber, value: item._id, ...item}))
   }
