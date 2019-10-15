@@ -38,7 +38,7 @@
     <v-card-text class="mt-3">
       <v-row>
         <v-col>
-          <h1>Автобусы</h1>
+          <h1>Автобусы ({{ buses.length }})</h1>
           <h2 class="pt-2">Резерв ({{ report.busReserve.length }})</h2>
           <v-chip
             v-for="bus in report.busReserve.sort((a, b) => (a.busnumber - b.busnumber))"
@@ -53,7 +53,7 @@
           </template>
         </v-col>
         <v-col>
-          <h1>Водители</h1>
+          <h1>Водители({{ drivers.length }})</h1>
           <h2 class="pt-2">Резерв ({{ report.driverReserveCount }})</h2>
           <v-simple-table>
             <thead>
@@ -216,6 +216,9 @@ export default {
     },
     buses() {
       return this.$store.getters["buses/list"];
+    },
+    drivers() {
+      return this.$store.getters["drivers/list"];
     }
   },
   methods: {
@@ -243,6 +246,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch("buses/readAll");
+    this.$store.dispatch("drivers/readAll")
   }
 };
 </script>
