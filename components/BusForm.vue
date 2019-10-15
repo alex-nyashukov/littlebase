@@ -19,6 +19,7 @@
           label="Выход"
         ></v-select>
         <v-select v-model="item.status" :items="['', 'Ремонт','СВАРЗ','Долгостой']" label="Статус"></v-select>
+        <v-text-field v-model="item.year" label="Год выпуска"></v-text-field>
       </v-flex>
     </v-layout>
   </v-form>

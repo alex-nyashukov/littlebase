@@ -29,6 +29,9 @@
       loading-text="Loading..."
       @click:row="onRowClick"
     >
+      <template v-slot:item.busnumber="{ item }">
+        {{ item.busnumber }} {{ item.capacity }}
+      </template>
     </v-data-table>
     <app-modal
       ref="modal"
@@ -54,7 +57,7 @@ export default {
           { text: 'Бортовой номер', value: 'busnumber' },
           { text: 'Марка', value: 'mark' },
           { text: 'Цвет', value: 'color' },
-          { text: 'Вместимость', value: 'capacity' },
+          { text: 'Год', value: 'year' },
           { text: 'Статус', value: 'status' }
         ]
       }

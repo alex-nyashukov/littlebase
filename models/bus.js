@@ -8,6 +8,7 @@ export default class Bus {
   drivers = []
   way = null
   status = ''
+  year = ''
 
   constructor(params) {
     Object.assign(this, params)

@@ -24,7 +24,8 @@ var busSchema = mongoose.Schema({
     capacity: String,
     drivers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'driver' }],
     way: { type: mongoose.Schema.Types.ObjectId, ref: 'way', childPath:"buses" },
-    status: String
+    status: String,
+    year: String
 })
 busSchema.plugin(relationship, { relationshipPathName:'way' })
 
