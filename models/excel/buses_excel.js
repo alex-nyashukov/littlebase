@@ -27,13 +27,17 @@ export default class DriverPhonesExcel {
         worksheet.addRow(['Борт. номер/Вмест.', 'Марка', 'Цвет', 'Год', 'Примечание'])
 
         sortedBuses.forEach((bus, index) => {
-            for(let i=0; i<5; i++) {
-                worksheet
-                    .getRow(index + 1)
-                    .getCell(i + 1)
-                    .border = { bottom: { style: 'thin' } }
-            }
             worksheet.addRow([`${bus.busnumber} ${bus.capacity}`, bus.mark, bus.color, bus.year, ''])
+            for(let i=0; i<4; i++) {
+                worksheet
+                    .getRow(index + 2)
+                    .getCell(i + 1)
+                    .border = { top: { style: 'thin' } }
+            }
+            worksheet
+                .getRow(index + 2)
+                .getCell(5)
+                .border = { left: { style: 'thin' }, top: { style: 'thin' } }
         })
 
         return await workbook.xlsx.writeBuffer();
