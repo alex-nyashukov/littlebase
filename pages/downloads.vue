@@ -16,6 +16,9 @@
     <v-col cols="12" sm="6" md="4">
       <download-outfit></download-outfit>
     </v-col>
+    <v-col cols="12" sm="6" md="4">
+      <download-driver-phones></download-driver-phones>
+    </v-col>
     </v-row>
   </v-layout>
 </template>
@@ -26,6 +29,7 @@ import DownloadA4 from '@/components/DownloadA4.vue'
 import DownloadA3 from '@/components/DownloadA3.vue'
 import DownloadAgreement from '@/components/DownloadAgreement.vue'
 import DownloadOutfit from '@/components/DownloadOutfit.vue'
+import DownloadDriverPhones from '@/components/DownloadDriverPhones.vue'
 
 export default {
   transition: "fade",
@@ -34,7 +38,8 @@ export default {
     DownloadA4,
     DownloadA3,
     DownloadAgreement,
-    DownloadOutfit
+    DownloadOutfit,
+    DownloadDriverPhones
   }
 };
 </script>
