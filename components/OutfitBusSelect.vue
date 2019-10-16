@@ -36,6 +36,9 @@ export default {
     item() {
       return this.$store.getters["outfit/item"](this.way._id);
     },
+    ways() {
+      return this.$store.getters["ways/list"]
+    },
     buses() {
       let buses = this.$store.getters["buses/list"].map(bus => ({
         text: bus.busnumber,
@@ -51,8 +54,12 @@ export default {
       buses = buses.filter(value => {
         let isInclude = true;
         this.$store.getters["outfit/items"].forEach(item => {
-          if (value._id == item[this.field] && item.wayId != this.way._id) {
-            isInclude = false;
+          if (value._id == item[this.field]) {
+            // isInclude = false;
+            let way = this.ways.find(way => way._id == item.wayId)
+            if(way) {
+              value.text = value.text + " (" + way.route.title + "/" + way.title + ")"
+            }
           }
         });
         if (!this.isFiltering) {
