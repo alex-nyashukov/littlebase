@@ -232,7 +232,7 @@ export default {
     auto() {
       let drivers = { firstSmene: [], secondSmene: [], allDay: [] };
       this.drivers.forEach(driver => {
-        switch (driver.statusesByDate({ date: this.date, count: 1, withExceptions: true })[0]) {
+        switch (driver.statusesByDate({ date: this.date, count: 1, withExceptions: true })[0].status) {
           case "Рабочий":
             drivers.allDay.push(driver);
             break;
