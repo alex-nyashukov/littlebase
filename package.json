@@ -20,7 +20,7 @@
     "express-jwt": "^5.3.1",
     "file-saver": "^2.0.2",
     "moment": "^2.24.0",
-    "mongoose": "^5.7.1",
+    "mongoose": "^5.7.5",
     "mongoose-relationship": "^0.1.5",
     "multer": "^1.4.2",
     "nuxt": "^2.0.0",
