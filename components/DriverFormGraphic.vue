@@ -3,7 +3,7 @@
     Graphic
     <v-select
       v-model="graphic.status"
-      :items="[{value: null, text: ''}, 'Рабочий', 'Выходной', 'Первая см.', 'Вторая см.', 'Больничный', 'Отпуск']"
+      :items="[{value: '', text: 'По умолчанию'}, 'Больничный', 'Отпуск']"
       label="Статус"
     ></v-select>
     <v-menu v-model="menu" :close-on-content-click="false" max-width="290">
