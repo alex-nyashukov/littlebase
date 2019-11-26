@@ -5,7 +5,7 @@ import Driver from '@/models/driver'
 
 export default class A3Excel {
   static async render({ buses, template, month }) {
-      let year = '2020'
+      let year = '2019'
 
       let sortedBuses = Array.from(buses)
       sortedBuses = sortedBuses.sort((a, b) => {
