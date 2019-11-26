@@ -43,20 +43,24 @@ export default class A3Excel {
       for (let i = 0; i < N / 2; i++) {
           worksheet = workbook.getWorksheet('Page ' + (i * 2 + 1))
 
-          drawLeft(worksheet, pages[i + 1])
-          drawRight(worksheet, pages[N - (i + 1)])
+          drawLeft(worksheet, pages[i + 1], i + 1)
+          drawRight(worksheet, pages[N - (i + 1)], N - (i + 1))
 
           worksheet = workbook.getWorksheet('Page ' + (i * 2 + 2))
 
-          drawLeft(worksheet, pages[(N - i) % N])
-          drawRight(worksheet, pages[i])
+          drawLeft(worksheet, pages[(N - i) % N], (N - i) % N)
+          drawRight(worksheet, pages[i], i)
       }
 
       return await workbook.xlsx.writeBuffer();
 
-      function drawLeft(worksheet, page) {
+      function drawLeft(worksheet, page, pageNumber = 0) {
           let rowNumber = 9
           let columnNumber = 2
+
+          worksheet.getRow(1)
+              .getCell(2)
+              .value = pageNumber
 
           page.forEach((bus) => {
               drawLeftBus(worksheet, bus, rowNumber, columnNumber)
@@ -118,9 +122,13 @@ export default class A3Excel {
               }
           }
       }
-      function drawRight(worksheet, page) {
+      function drawRight(worksheet, page, pageNumber = 0) {
           let rowNumber = 9
           let columnNumber = 20
+
+          worksheet.getRow(1)
+              .getCell(44)
+              .value = pageNumber
 
           page.forEach((bus) => {
               drawRightBus(worksheet, bus, rowNumber, columnNumber)
