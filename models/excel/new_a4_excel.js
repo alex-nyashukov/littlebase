@@ -6,7 +6,7 @@ import Driver from '@/models/driver'
 export default class A4Excel {
   static async render({ buses, template, month }) {
 
-      let year = '2019'
+      let year = '2020'
 
       let sortedBuses = Array.from(buses)
       sortedBuses = sortedBuses.sort((a, b) => {
